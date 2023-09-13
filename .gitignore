@@ -1,0 +1,4 @@
+# Ignorar diretório de dependências Node.js
+
+node_modules
+
