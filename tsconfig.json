@@ -1,7 +1,9 @@
 {
-  "target": "ES2021",
-  "outDir": "./dist",
-  "module": "commonjs",
-  "esModuleInterop": true,
-  "allowJs": true
+  "compilerOptions": {
+    "target": "ES2021",
+    "outDir": "./dist",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "allowJs": true
+  }
 }
