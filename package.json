@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node dist/main/server.js",
     "prebuild": "rimraf dist",
     "build": "tsc -p tsconfig.build.json",
     "test": "jest --colors  --no-cache --passWithNoTests --runInBand",
@@ -19,6 +20,7 @@
   "license": "ISC",
   "devDependencies": {
     "@types/jest": "^29.5.4",
+    "@types/module-alias": "^2.0.2",
     "@types/node": "^20.6.0",
     "@typescript-eslint/eslint-plugin": "^6.7.0",
     "@typescript-eslint/parser": "^6.7.0",
@@ -33,5 +35,11 @@
     "rimraf": "^5.0.1",
     "ts-jest": "^29.1.1",
     "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "module-alias": "^2.2.3"
+  },
+  "_moduleAliases": {
+    "@": "dist"
   }
 }

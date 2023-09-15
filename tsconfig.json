@@ -5,11 +5,16 @@
     "outDir": "dist",
     "module": "commonjs",
     "esModuleInterop": true,
+    "moduleResolution": "node",
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     "sourceMap": true,
     "allowJs": true,
-    "strict": true
+    "strict": true,
+    "baseUrl": "src",
+    "paths": {
+      "@/*": ["*"]
+    }
   },
   "include": ["src"]
 }
