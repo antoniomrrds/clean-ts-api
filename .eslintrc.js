@@ -18,5 +18,6 @@ module.exports = {
   rules: {
     '@typescript-eslint/no-namespace': 'off',
     '@typescript-eslint/no-empty-function': 'off',
+    '@typescript-eslint/strict-boolean-expressions': 'off',
   },
 };
