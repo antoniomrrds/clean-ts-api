@@ -1,6 +1,7 @@
-/* eslint-disable */
+import { HttpRequest, HttpResponse } from '@/presentation/ports';
+
 export class SignUpController {
-  handle(httpRequest: any): any {
+  handle(httpRequest: HttpRequest): HttpResponse | undefined {
     if (!httpRequest.body.email) {
       return {
         statusCode: 400,
