@@ -1,5 +1,5 @@
-import { HttpRequest, HttpResponse } from '@/presentation/ports/http';
+import { HttpRequest, HttpResponse } from '@/presentation/ports';
 
 export interface Controller {
-  handle: (httpRequest: HttpRequest) => HttpResponse | undefined;
+  handle: (httpRequest: HttpRequest) => HttpResponse;
 }

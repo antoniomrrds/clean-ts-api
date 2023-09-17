@@ -13,7 +13,7 @@ export class SignUpController implements Controller {
     private readonly emailValidator: EmailValidator,
     private readonly addAccount: AddAccount,
   ) {}
-  handle(httpRequest: HttpRequest): HttpResponse | undefined {
+  handle(httpRequest: HttpRequest): HttpResponse {
     try {
       const requiredFields = [
         'email',
@@ -34,11 +34,15 @@ export class SignUpController implements Controller {
       if (!isValid) {
         return badRequest(new InvalidParamError('email'));
       }
-      this.addAccount.add({
+      const accountData = this.addAccount.add({
         email,
         name,
         password,
       });
+      return {
+        statusCode: 201,
+        body: accountData,
+      };
     } catch (error) {
       return serverError();
     }
