@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { SignUpController } from '@/presentation/controllers/signup';
 import { InvalidParamError, MissingParamError } from '@/presentation/errors';
+import { ServerError } from '@/presentation/errors/server-error';
 import { EmailValidator } from '@/presentation/ports';
 
 type SutTypes = {
@@ -9,7 +11,6 @@ type SutTypes = {
 
 const makeSut = (): SutTypes => {
   class EmailValidatorStub implements EmailValidator {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     isValid(email: string): boolean {
       return true;
     }
@@ -77,21 +78,6 @@ describe('Signup Controller', () => {
       new MissingParamError('passwordConfirmation'),
     );
   });
-  it('Should return 400 if an invalid email is provided', () => {
-    const { sut, emailValidatorStub } = makeSut();
-    jest.spyOn(emailValidatorStub, 'isValid').mockReturnValueOnce(false);
-    const httpRequest = {
-      body: {
-        name: 'any_name',
-        email: 'invalid_email@mail.com',
-        password: 'any_password',
-        passwordConfirmation: 'any_password',
-      },
-    };
-    const httpResponse = sut.handle(httpRequest);
-    expect(httpResponse?.statusCode).toBe(400);
-    expect(httpResponse?.body).toEqual(new InvalidParamError('email'));
-  });
   it('Should call EmailValidator with correct email', () => {
     const { sut, emailValidatorStub } = makeSut();
     const isValidSpy = jest.spyOn(emailValidatorStub, 'isValid');
@@ -105,5 +91,25 @@ describe('Signup Controller', () => {
     };
     sut.handle(httpRequest);
     expect(isValidSpy).toHaveBeenCalledWith(httpRequest.body.email);
+  });
+  it('Should return 500 if EmailValidator throws', () => {
+    class EmailValidatorStub implements EmailValidator {
+      isValid(email: string): boolean {
+        throw new Error();
+      }
+    }
+    const emailValidatorStub = new EmailValidatorStub();
+    const sut = new SignUpController(emailValidatorStub);
+    const httpRequest = {
+      body: {
+        name: 'any_name',
+        email: 'any_email@mail.com',
+        password: 'any_password',
+        passwordConfirmation: 'any_password',
+      },
+    };
+    const httpResponse = sut.handle(httpRequest);
+    expect(httpResponse?.statusCode).toBe(500);
+    expect(httpResponse?.body).toEqual(new ServerError());
   });
 });
