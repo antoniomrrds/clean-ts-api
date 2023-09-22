@@ -1,15 +1,26 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { Encrypter } from '@/application/ports';
 import { DbAddAccount } from '@/application/useCases/add-account';
+
+type SutTypes = {
+  sut: DbAddAccount;
+  encrypterStub: Encrypter;
+};
+
+const makeSut = (): SutTypes => {
+  class EncrypterStub {
+    async encrypt(value: string): Promise<string> {
+      return new Promise(resolve => resolve('hashed_password'));
+    }
+  }
+  const encrypterStub = new EncrypterStub();
+  const sut = new DbAddAccount(encrypterStub);
+  return { sut, encrypterStub };
+};
 
 describe('DbAddAccount Usecase', () => {
   it('Should call Encrypter with correct password', async () => {
-    class EncrypterStub {
-      async encrypt(value: string): Promise<string> {
-        return new Promise(resolve => resolve('hashed_password'));
-      }
-    }
-    const encrypterStub = new EncrypterStub();
-    const sut = new DbAddAccount(encrypterStub);
+    const { sut, encrypterStub } = makeSut();
     const encryptSpy = jest.spyOn(encrypterStub, 'encrypt');
     const accountData = {
       name: 'valid_name',
