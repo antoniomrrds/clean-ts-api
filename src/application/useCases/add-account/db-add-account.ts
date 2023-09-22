@@ -1,6 +1,10 @@
-import { Encrypter } from '@/application/ports';
-import { AccountModel } from '@/domain/entities';
-import { AddAccount, AddAccountModel } from '@/domain/usecases';
+import {
+  AccountModel,
+  AddAccount,
+  AddAccountModel,
+  Encrypter,
+} from '@/application/useCases/add-account/ports';
+
 export class DbAddAccount implements AddAccount {
   constructor(private readonly encrypter: Encrypter) {}
 

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Encrypter } from '@/application/ports';
+import { Encrypter } from '@/application/useCases/add-account/ports';
 import { DbAddAccount } from '@/application/useCases/add-account';
 
 type SutTypes = {
