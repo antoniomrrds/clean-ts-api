@@ -1,0 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { MongoClient } from 'mongodb';
+
+export const MongoHelper = {
+  client: null as MongoClient | null,
+  async connect(uri: string): Promise<void> {
+    this.client = await MongoClient.connect(uri);
+  },
+  async disconnect(): Promise<void> {
+    await this.client?.close();
+  },
+};
