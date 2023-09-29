@@ -1,5 +1,3 @@
-import * as dotenv from 'dotenv';
-dotenv.config();
 import { EnvironmentVariableError } from '@/shared/infrastructure/env-config/errors';
 
 export const getOrDefaultEnvironmentVariable = (
