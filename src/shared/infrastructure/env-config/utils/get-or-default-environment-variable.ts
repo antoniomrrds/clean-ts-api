@@ -7,12 +7,9 @@ export const getOrDefaultEnvironmentVariable = (
   defaultValue?: string,
 ): string => {
   const value = process.env[environmentVariable];
-
-  return (
-    value ??
-    defaultValue ??
-    (() => {
-      throw new EnvironmentVariableError(String(environmentVariable));
-    })()
-  );
+  if (!value && defaultValue) return defaultValue;
+  if (!value && !defaultValue) {
+    throw new EnvironmentVariableError(String(environmentVariable));
+  }
+  return value as string;
 };
