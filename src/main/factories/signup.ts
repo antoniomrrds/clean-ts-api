@@ -4,7 +4,7 @@ import { AccountMongoRepository } from '@/infrastructure/db/mongodb/account-repo
 import { BcryptAdapter } from '@/infrastructure/criptography';
 import { DbAddAccount } from '@/application/useCases/add-account';
 import { SignUpController } from '@/presentation/controllers/signup';
-import { LogControllerDecorator } from '@/decorators/';
+import { LogControllerDecorator } from '@/main/decorators';
 
 export const makeSignUpController = (): Controller => {
   const emailValidatorAdapter = new EmailValidatorAdapter();
