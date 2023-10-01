@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ServerError } from '@/presentation/errors';
+import { ServerError, UnauthorizedError } from '@/presentation/errors';
 import { HttpResponse } from '@/presentation/ports';
 
 export const badRequest = (error: Error): HttpResponse => ({
@@ -15,4 +15,9 @@ export const serverError = (error: unknown): HttpResponse => ({
 export const created = <T = any>(data: T): HttpResponse => ({
   statusCode: 201,
   body: data,
+});
+
+export const unauthorized = (): HttpResponse => ({
+  statusCode: 401,
+  body: new UnauthorizedError(),
 });
