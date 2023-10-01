@@ -55,8 +55,5 @@
     "module-alias": "^2.2.3",
     "mongodb": "^5.9.0",
     "validator": "^13.11.0"
-  },
-  "_moduleAliases": {
-    "@": "dist"
   }
 }

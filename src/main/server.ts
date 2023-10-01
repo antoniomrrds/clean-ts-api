@@ -1,4 +1,4 @@
-import 'module-alias/register';
+import './config/module-alias';
 import { mongoUrl, portServer } from '@/shared/infrastructure/env-config';
 import { MongoHelper } from '@/infrastructure/db/mongodb/helpers';
 MongoHelper.connect(mongoUrl)
