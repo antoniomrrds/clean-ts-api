@@ -1,6 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { InvalidParamError, MissingParamError } from '@/presentation/errors';
-import { badRequest, serverError, unauthorized } from '@/presentation/helpers';
+import {
+  badRequest,
+  ok,
+  serverError,
+  unauthorized,
+} from '@/presentation/helpers';
 import {
   Controller,
   HttpRequest,
@@ -29,11 +34,12 @@ export class LoginController implements Controller {
         return badRequest(new InvalidParamError('email'));
       }
 
-      const acessToken = await this.authentication.auth(email, password);
-      if (!acessToken) {
+      const accessToken = await this.authentication.auth(email, password);
+      if (!accessToken) {
         return unauthorized();
       }
-      return new Promise(resolve => resolve({ statusCode: 200, body: {} }));
+
+      return ok({ accessToken });
     } catch (error) {
       return serverError(error);
     }
