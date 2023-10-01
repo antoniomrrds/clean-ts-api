@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node -r 'dotenv/config' dist/main/server.js",
-    "dev:watch": "ts-node-dev -r 'dotenv/config' src/main/server.ts",
+    "start": "node -r dotenv/config dist/main/server.js",
+    "dev:watch": "ts-node-dev --respawn --transpile-only -r dotenv/config src/main/server.ts",
     "prebuild": "rimraf dist",
     "build": "tsc -p tsconfig.build.json",
     "test": "jest --colors  --no-cache --passWithNoTests --runInBand",
@@ -55,5 +55,8 @@
     "module-alias": "^2.2.3",
     "mongodb": "^5.9.0",
     "validator": "^13.11.0"
+  },
+  "_moduleAliases": {
+    "@": "dist"
   }
 }
