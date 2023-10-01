@@ -6,7 +6,12 @@ import {
 } from '@/presentation/controllers/login/ports';
 import { LoginController } from '@/presentation/controllers/login';
 import { InvalidParamError, MissingParamError } from '@/presentation/errors';
-import { badRequest, serverError, unauthorized } from '@/presentation/helpers';
+import {
+  badRequest,
+  ok,
+  serverError,
+  unauthorized,
+} from '@/presentation/helpers';
 
 const makeAuthentication = (): Authentication => {
   class AuthenticationStub implements Authentication {
@@ -133,6 +138,11 @@ describe('Login Controller', () => {
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse).toEqual(serverError(new Error()));
   });
-  
 
+  it('Should return 200 if valid credentials are provided', async () => {
+    const { sut } = makeSut();
+    const httpRequest = makeFakeRequest();
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse).toEqual(ok({ accessToken: 'any_token' }));
+  });
 });
