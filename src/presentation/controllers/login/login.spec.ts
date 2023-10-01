@@ -1,9 +1,19 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { Authentication } from '@/domain/entities';
 import { LoginController } from '@/presentation/controllers/login';
 import { InvalidParamError, MissingParamError } from '@/presentation/errors';
-import { badRequest } from '@/presentation/helpers';
+import { badRequest, serverError } from '@/presentation/helpers';
 import { HttpRequest } from '@/presentation/ports';
 import { EmailValidator } from '@/presentation/ports/email-validator';
+
+const makeAuthentication = (): Authentication => {
+  class AuthenticationStub implements Authentication {
+    async auth(email: string, password: string): Promise<string> {
+      return new Promise(resolve => resolve('any_token'));
+    }
+  }
+  return new AuthenticationStub();
+};
 
 const makeFakeRequest = (): HttpRequest => ({
   body: {
@@ -25,14 +35,17 @@ const makeEmailValidator = (): EmailValidator => {
 type sutTypes = {
   sut: LoginController;
   emailValidatorStub: EmailValidator;
+  authenticationStub: Authentication;
 };
 
 const makeSut = (): sutTypes => {
+  const authenticationStub = makeAuthentication();
   const emailValidatorStub = makeEmailValidator();
-  const sut = new LoginController(emailValidatorStub);
+  const sut = new LoginController(emailValidatorStub, authenticationStub);
   return {
     sut,
     emailValidatorStub,
+    authenticationStub,
   };
 };
 
@@ -83,6 +96,17 @@ describe('Login Controller', () => {
     });
     const httpRequest = makeFakeRequest();
     const httpResponse = await sut.handle(httpRequest);
-    expect(httpResponse.statusCode).toBe(500);
+    expect(httpResponse).toEqual(serverError(new Error()));
+  });
+
+  it('Should call Authentication with correct values', async () => {
+    const { sut, authenticationStub } = makeSut();
+    const authSpy = jest.spyOn(authenticationStub, 'auth');
+    const httpRequest = makeFakeRequest();
+    await sut.handle(httpRequest);
+    expect(authSpy).toHaveBeenCalledWith(
+      makeFakeRequest().body.email,
+      makeFakeRequest().body.password,
+    );
   });
 });
