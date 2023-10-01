@@ -1,10 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Authentication } from '@/domain/entities';
+import {
+  Authentication,
+  HttpRequest,
+  EmailValidator,
+} from '@/presentation/controllers/login/ports';
 import { LoginController } from '@/presentation/controllers/login';
 import { InvalidParamError, MissingParamError } from '@/presentation/errors';
 import { badRequest, serverError, unauthorized } from '@/presentation/helpers';
-import { HttpRequest } from '@/presentation/ports';
-import { EmailValidator } from '@/presentation/ports/email-validator';
 
 const makeAuthentication = (): Authentication => {
   class AuthenticationStub implements Authentication {

@@ -1,9 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Authentication } from '@/domain/entities';
 import { InvalidParamError, MissingParamError } from '@/presentation/errors';
 import { badRequest, serverError, unauthorized } from '@/presentation/helpers';
-import { Controller, HttpRequest, HttpResponse } from '@/presentation/ports';
-import { EmailValidator } from '@/presentation/ports/email-validator';
+import {
+  Controller,
+  HttpRequest,
+  HttpResponse,
+  Authentication,
+  EmailValidator,
+} from '@/presentation/controllers/login/ports';
 
 export class LoginController implements Controller {
   constructor(
@@ -26,7 +30,6 @@ export class LoginController implements Controller {
       }
 
       const acessToken = await this.authentication.auth(email, password);
-      console.log(acessToken);
       if (!acessToken) {
         return unauthorized();
       }
