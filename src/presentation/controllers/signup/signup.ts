@@ -1,4 +1,4 @@
-import { InvalidParamError, MissingParamError } from '@/presentation/errors';
+import { InvalidParamError } from '@/presentation/errors';
 import { badRequest, created, serverError } from '@/presentation/helpers';
 import {
   Controller,
@@ -21,17 +21,7 @@ export class SignUpController implements Controller {
       if (error) {
         return badRequest(error);
       }
-      const requiredFields = [
-        'email',
-        'name',
-        'password',
-        'passwordConfirmation',
-      ];
-      for (const field of requiredFields) {
-        if (!httpRequest.body[field]) {
-          return badRequest(new MissingParamError(field));
-        }
-      }
+
       const { email, password, passwordConfirmation, name } = httpRequest.body;
       if (password !== passwordConfirmation) {
         return badRequest(new InvalidParamError('passwordConfirmation'));
