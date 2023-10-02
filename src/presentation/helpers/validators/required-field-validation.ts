@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { MissingParamError } from '@/presentation/errors';
-import { Validation } from '@/presentation/helpers/validators/validation';
+import { Validation } from '@/presentation/helpers/validators';
 
 export class RequiredFieldValidation implements Validation {
   constructor(private readonly fieldName: string) {}

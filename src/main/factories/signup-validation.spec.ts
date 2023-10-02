@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { makeSignUpValidation } from '@/main/factories';
 import {
+  CompareFieldsValidation,
   RequiredFieldValidation,
   Validation,
   ValidationComposite,
@@ -15,6 +16,9 @@ describe('SignUpValidation Factory', () => {
     for (const field of ['name', 'email', 'password', 'passwordConfirmation']) {
       validations.push(new RequiredFieldValidation(field));
     }
+    validations.push(
+      new CompareFieldsValidation('password', 'passwordConfirmation'),
+    );
     expect(ValidationComposite).toHaveBeenCalledWith(validations);
   });
 });
