@@ -1,4 +1,4 @@
-import { badRequest, created, serverError } from '@/presentation/helpers';
+import { badRequest, created, serverError } from '@/presentation/helpers/http';
 import {
   Controller,
   HttpRequest,

@@ -9,7 +9,7 @@ import {
 } from '@/presentation/controllers/signup/ports';
 import { SignUpController } from '@/presentation/controllers/signup';
 import { MissingParamError, ServerError } from '@/presentation/errors';
-import { badRequest, created, serverError } from '@/presentation/helpers';
+import { badRequest, created, serverError } from '@/presentation/helpers/http';
 
 const makeFakeAccount = (): AccountModel => ({
   id: 'valid_id',

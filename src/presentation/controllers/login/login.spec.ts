@@ -6,13 +6,13 @@ import {
   Validation,
 } from '@/presentation/controllers/login/ports';
 import { LoginController } from '@/presentation/controllers/login';
-import { InvalidParamError, MissingParamError } from '@/presentation/errors';
+import { MissingParamError } from '@/presentation/errors';
 import {
   badRequest,
   ok,
   serverError,
   unauthorized,
-} from '@/presentation/helpers';
+} from '@/presentation/helpers/http';
 
 const makeAuthentication = (): Authentication => {
   class AuthenticationStub implements Authentication {
