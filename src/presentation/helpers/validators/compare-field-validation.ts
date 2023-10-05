@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { InvalidParamError } from '@/presentation/errors';
-import { Validation } from '@/presentation/helpers/validators';
+import { Validation } from '@/presentation/ports';
 
 export class CompareFieldsValidation implements Validation {
   constructor(

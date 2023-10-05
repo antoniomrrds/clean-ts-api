@@ -4,10 +4,10 @@ import {
   CompareFieldsValidation,
   EmailValidation,
   RequiredFieldValidation,
-  Validation,
   ValidationComposite,
 } from '@/presentation/helpers/validators';
 import { EmailValidator } from '@/presentation/ports/email-validator';
+import { Validation } from '@/presentation/ports';
 
 const makeEmailValidator = (): EmailValidator => {
   class EmailValidatorStub implements EmailValidator {

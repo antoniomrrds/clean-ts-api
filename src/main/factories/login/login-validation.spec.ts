@@ -3,9 +3,9 @@ import { makeLoginValidation } from '@/main/factories/login';
 import {
   EmailValidation,
   RequiredFieldValidation,
-  Validation,
   ValidationComposite,
 } from '@/presentation/helpers/validators';
+import { Validation } from '@/presentation/ports';
 import { EmailValidator } from '@/presentation/ports/email-validator';
 
 const makeEmailValidator = (): EmailValidator => {

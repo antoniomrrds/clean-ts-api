@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Validation } from '@/presentation/helpers/validators';
+import { Validation } from '@/presentation/ports';
 
 export class ValidationComposite implements Validation {
   constructor(private readonly validations: Validation[]) {}

@@ -1,10 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { MissingParamError } from '@/presentation/errors';
-import {
-  Validation,
-  ValidationComposite,
-} from '@/presentation/helpers/validators';
+import { ValidationComposite } from '@/presentation/helpers/validators';
+import { Validation } from '@/presentation/ports';
 
 const makeValidation = (): Validation => {
   class ValidationStub implements Validation {
