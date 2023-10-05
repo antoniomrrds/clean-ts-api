@@ -5,7 +5,7 @@ import { DbAddAccount } from '@/application/useCases/add-account';
 import { SignUpController } from '@/presentation/controllers/signup';
 import { LogControllerDecorator } from '@/main/decorators';
 import { LogMongoRepository } from '@/infrastructure/db/mongodb/log-repository';
-import { makeSignUpValidation } from '@/main/factories';
+import { makeSignUpValidation } from '@/main/factories/signup';
 
 export const makeSignUpController = (): Controller => {
   const salt = 12;
