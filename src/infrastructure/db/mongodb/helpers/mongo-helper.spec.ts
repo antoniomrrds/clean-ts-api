@@ -12,6 +12,8 @@ describe('Mongo Helper', () => {
     const accountCollection = sut.getCollection('accounts');
     expect(accountCollection).toBeTruthy();
     await sut.disconnect();
-    expect(accountCollection).toBeTruthy();
+    expect(sut.isConnected).toBe(false);
+    await sut.getCollection('accounts');
+    expect(sut.isConnected).toBe(true);
   });
 });
