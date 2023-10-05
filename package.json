@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node -r dotenv/config dist/main/server.js",
+    "start": "TS_NODE_DEV=production node -r dotenv/config dist/main/server.js",
     "dev:watch": "ts-node-dev --respawn --transpile-only -r dotenv/config src/main/server.ts",
     "prebuild": "rimraf dist",
     "build": "tsc -p tsconfig.build.json",
@@ -13,6 +13,7 @@
     "test:integration": "npm test -- --watch -c jest-integration-config.js",
     "test:staged": "npm test -- --findRelatedTests",
     "test:ci": "npm test -- --coverage",
+    "test:ci:silent": "npm test -- --coverage --silent",
     "lint:fix": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix --max-warnings 0",
     "prepare": "husky install",
     "db:dev:rm": "docker compose rm mongo -s -f -v",
