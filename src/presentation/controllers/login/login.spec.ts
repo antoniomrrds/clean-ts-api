@@ -3,6 +3,7 @@
 import {
   Authentication,
   HttpRequest,
+  AuthenticationModel,
   Validation,
 } from '@/presentation/controllers/login/ports';
 import { LoginController } from '@/presentation/controllers/login';
@@ -16,7 +17,7 @@ import {
 
 const makeAuthentication = (): Authentication => {
   class AuthenticationStub implements Authentication {
-    async auth(email: string, password: string): Promise<string> {
+    async auth(authentication: AuthenticationModel): Promise<string> {
       return new Promise(resolve => resolve('any_token'));
     }
   }
@@ -61,10 +62,8 @@ describe('Login Controller', () => {
     const authSpy = jest.spyOn(authenticationStub, 'auth');
     const httpRequest = makeFakeRequest();
     await sut.handle(httpRequest);
-    expect(authSpy).toHaveBeenCalledWith(
-      makeFakeRequest().body.email,
-      makeFakeRequest().body.password,
-    );
+    const valueRequest = makeFakeRequest().body;
+    expect(authSpy).toHaveBeenCalledWith(valueRequest);
   });
 
   it('Should return 401 if invalid credentials are provided', async () => {
