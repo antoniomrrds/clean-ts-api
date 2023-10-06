@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { LoadAccountByEmailRepository } from '@/application/ports/db';
 import { DbAuthentication } from '@/application/useCases/authentication';
@@ -59,5 +60,14 @@ describe('DbAuthentication UseCase', () => {
       );
     const promise = sut.auth(makeFakeAuthentication());
     expect(promise).rejects.toThrow();
+  });
+
+  it('Should return null if loadAccountByEmailRepository returns null', async () => {
+    const { sut, loadAccountByEmailRepositoryStub } = makeSut();
+    jest
+      .spyOn(loadAccountByEmailRepositoryStub, 'load')
+      .mockReturnValueOnce(null as any);
+    const accessToken = await sut.auth(makeFakeAuthentication());
+    expect(accessToken).toBeNull();
   });
 });
