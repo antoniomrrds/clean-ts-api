@@ -1,3 +1,3 @@
 export * from '@/presentation/ports';
-export { AddAccountModel, AddAccount } from '@/domain/usecases';
-export { AccountModel } from '@/domain/entities/';
+export * from '@/domain/usecases';
+export * from '@/domain/entities/';

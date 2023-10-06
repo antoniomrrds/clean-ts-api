@@ -1,14 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { HashComparer, TokenGenerator } from '@/application/ports/criptography';
 import {
-  LoadAccountByEmailRepository,
+  HashComparer,
+  TokenGenerator,
   UpdateAccessTokenRepository,
-} from '@/application/ports/db';
+  LoadAccountByEmailRepository,
+  AccountModel,
+  AuthenticationModel,
+} from '@/application/useCases/authentication/ports';
+
 import { DbAuthentication } from '@/application/useCases/authentication';
-import { AccountModel } from '@/domain/entities';
-import { AuthenticationModel } from '@/domain/usecases';
-import { rejects } from 'assert';
 
 const makeFakeAuthentication = (): AuthenticationModel => ({
   email: 'any_email@mail.com',

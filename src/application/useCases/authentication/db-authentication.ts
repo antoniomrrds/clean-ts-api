@@ -1,10 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { HashComparer, TokenGenerator } from '@/application/ports/criptography';
 import {
-  LoadAccountByEmailRepository,
+  HashComparer,
+  TokenGenerator,
   UpdateAccessTokenRepository,
-} from '@/application/ports/db';
-import { Authentication, AuthenticationModel } from '@/domain/usecases';
+  LoadAccountByEmailRepository,
+  AuthenticationModel,
+  Authentication,
+} from '@/application/useCases/authentication/ports';
 
 export class DbAuthentication implements Authentication {
   constructor(
