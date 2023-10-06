@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   HashComparer,
-  TokenGenerator,
+  Encrypter,
   UpdateAccessTokenRepository,
   LoadAccountByEmailRepository,
   AuthenticationModel,
@@ -12,7 +12,7 @@ export class DbAuthentication implements Authentication {
   constructor(
     private readonly loadAccountByEmailRepository: LoadAccountByEmailRepository,
     private readonly hashCompare: HashComparer,
-    private readonly tokenGenerator: TokenGenerator,
+    private readonly encrypter: Encrypter,
     private readonly updateAccessTokenRepository: UpdateAccessTokenRepository,
   ) {}
 
@@ -27,7 +27,7 @@ export class DbAuthentication implements Authentication {
         account.password,
       );
       if (isValid) {
-        const acesstoken = await this.tokenGenerator.generate(account.id);
+        const acesstoken = await this.encrypter.encrypt(account.id);
         await this.updateAccessTokenRepository.updateAccessToken(
           account.id,
           acesstoken,
