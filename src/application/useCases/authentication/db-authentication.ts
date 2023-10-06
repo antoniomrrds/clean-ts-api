@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { HashComparer, TokenGenerator } from '@/application/ports/criptography';
-import { LoadAccountByEmailRepository } from '@/application/ports/db';
+import {
+  LoadAccountByEmailRepository,
+  UpdateAccessTokenRepository,
+} from '@/application/ports/db';
 import { Authentication, AuthenticationModel } from '@/domain/usecases';
 
 export class DbAuthentication implements Authentication {
@@ -8,6 +11,7 @@ export class DbAuthentication implements Authentication {
     private readonly loadAccountByEmailRepository: LoadAccountByEmailRepository,
     private readonly hashCompare: HashComparer,
     private readonly tokenGenerator: TokenGenerator,
+    private readonly updateAccessTokenRepository: UpdateAccessTokenRepository,
   ) {}
 
   async auth(authentication: AuthenticationModel): Promise<string> {
@@ -22,6 +26,10 @@ export class DbAuthentication implements Authentication {
       );
       if (isValid) {
         const acesstoken = await this.tokenGenerator.generate(account.id);
+        await this.updateAccessTokenRepository.updateAccessToken(
+          account.id,
+          acesstoken,
+        );
         return acesstoken;
       }
     }
