@@ -1,4 +1,4 @@
-import { AddAccountRepository } from '@/application/ports';
+import { AddAccountRepository } from '@/application/ports/db';
 import { AccountModel } from '@/domain/entities';
 import { AddAccountModel } from '@/domain/usecases';
 import { MongoHelper } from '@/infrastructure/db/mongodb/helpers';

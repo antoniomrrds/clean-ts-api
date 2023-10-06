@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { LogErrorRepository } from '@/application/ports';
+import { LogErrorRepository } from '@/application/ports/db';
 import { AccountModel } from '@/domain/entities';
 import { LogControllerDecorator } from '@/main/decorators';
 import { created, serverError } from '@/presentation/helpers/http';

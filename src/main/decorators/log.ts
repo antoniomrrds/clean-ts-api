@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { LogErrorRepository } from '@/application/ports';
+import { LogErrorRepository } from '@/application/ports/db';
 import { Controller, HttpRequest, HttpResponse } from '@/presentation/ports';
 
 export class LogControllerDecorator implements Controller {

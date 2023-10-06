@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { LoadAccountByEmailRepository } from '@/application/ports';
+import { LoadAccountByEmailRepository } from '@/application/ports/db';
 import { Authentication, AuthenticationModel } from '@/domain/usecases';
 
 export class DbAuthentication implements Authentication {

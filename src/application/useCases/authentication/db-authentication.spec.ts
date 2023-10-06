@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { LoadAccountByEmailRepository } from '@/application/ports';
+import { LoadAccountByEmailRepository } from '@/application/ports/db';
 import { DbAuthentication } from '@/application/useCases/authentication';
 import { AccountModel } from '@/domain/entities';
 import { AuthenticationModel } from '@/domain/usecases';

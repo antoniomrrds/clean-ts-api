@@ -1,4 +1,4 @@
-import { Encrypter } from '@/application/ports';
+import { Encrypter } from '@/application/ports/criptography';
 import bcrypt from 'bcrypt';
 export class BcryptAdapter implements Encrypter {
   constructor(private readonly salt: number) {}
