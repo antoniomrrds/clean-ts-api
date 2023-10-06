@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { HashComparer } from '@/application/ports/criptography';
+import { HashComparer, TokenGenerator } from '@/application/ports/criptography';
 import { LoadAccountByEmailRepository } from '@/application/ports/db';
 import { Authentication, AuthenticationModel } from '@/domain/usecases';
 
@@ -7,6 +7,7 @@ export class DbAuthentication implements Authentication {
   constructor(
     private readonly loadAccountByEmailRepository: LoadAccountByEmailRepository,
     private readonly hashCompare: HashComparer,
+    private readonly tokenGenerator: TokenGenerator,
   ) {}
 
   async auth(authentication: AuthenticationModel): Promise<string> {
@@ -16,6 +17,8 @@ export class DbAuthentication implements Authentication {
 
     if (account) {
       await this.hashCompare.compare(authentication.password, account.password);
+
+      await this.tokenGenerator.generate(account.id);
     }
     return null as any;
   }
