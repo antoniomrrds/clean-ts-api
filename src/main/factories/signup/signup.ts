@@ -1,6 +1,6 @@
 import { Controller } from '@/presentation/ports';
 import { AccountMongoRepository } from '@/infrastructure/db/mongodb/account-repository';
-import { BcryptAdapter } from '@/infrastructure/criptography';
+import { BcryptAdapter } from '@/infrastructure/criptography/bcrypt-adapter';
 import { DbAddAccount } from '@/application/useCases/add-account';
 import { SignUpController } from '@/presentation/controllers/signup';
 import { LogControllerDecorator } from '@/main/decorators';

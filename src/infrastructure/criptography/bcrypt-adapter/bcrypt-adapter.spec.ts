@@ -1,4 +1,4 @@
-import { BcryptAdapter } from '@/infrastructure/criptography';
+import { BcryptAdapter } from '@/infrastructure/criptography/bcrypt-adapter';
 import bcrypt from 'bcrypt';
 
 const salt = 12;
