@@ -27,12 +27,12 @@ export class DbAuthentication implements Authentication {
         account.password,
       );
       if (isValid) {
-        const acesstoken = await this.encrypter.encrypt(account.id);
+        const accesstoken = await this.encrypter.encrypt(account.id);
         await this.updateAccessTokenRepository.updateAccessToken(
           account.id,
-          acesstoken,
+          accesstoken,
         );
-        return acesstoken;
+        return accesstoken;
       }
     }
     return null as any;
