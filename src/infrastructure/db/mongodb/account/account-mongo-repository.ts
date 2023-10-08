@@ -2,7 +2,7 @@ import {
   AddAccountRepository,
   LoadAccountByEmailRepository,
   UpdateAccessTokenRepository,
-} from '@/application/ports/db';
+} from '@/application/ports/db/account';
 import { AccountModel } from '@/domain/entities';
 import { AddAccountModel } from '@/domain/usecases';
 import { MongoHelper } from '@/infrastructure/db/mongodb/helpers';
