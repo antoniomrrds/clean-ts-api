@@ -19,9 +19,9 @@ export class AccountMongoRepository
     return MongoHelper.map(accountDocument);
   }
 
-  async loadByEmail(email: string): Promise<AccountModel> {
+  async loadByEmail(email: string): Promise<AccountModel | null> {
     const accountCollection = await MongoHelper.getCollection('accounts');
     const account = await accountCollection?.findOne({ email });
-    return MongoHelper.map(account);
+    return account && MongoHelper.map(account);
   }
 }
