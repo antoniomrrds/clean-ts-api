@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Collection, MongoClient } from 'mongodb';
+import { Collection, MongoClient, ObjectId } from 'mongodb';
 
 export const MongoHelper = {
   client: null as MongoClient | null,
@@ -26,5 +26,8 @@ export const MongoHelper = {
       ...dataWithoutId,
       id: String(_id),
     } as T;
+  },
+  objectId(id: string): any {
+    return new ObjectId(id);
   },
 };
