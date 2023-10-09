@@ -108,4 +108,16 @@ describe('Signup Controller', () => {
       badRequest(new MissingParamError('any_field')),
     );
   });
+
+  it('should return a ServerError response with "Server failed. Try again soon" when error is undefined', () => {
+    // Arrange
+    const error: undefined = undefined;
+
+    // Act
+    const result = serverError(error);
+
+    // Assert
+    expect(result.statusCode).toBe(500);
+    expect(result.body.message).toBe('Server failed. Try again soon');
+  });
 });
