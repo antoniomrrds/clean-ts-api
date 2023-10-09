@@ -6,5 +6,5 @@ export const { portServer, mongoUrl, jwtSecret } = {
     'MONGO_URL',
     'mongodb://127.0.0.1:27017/clean-node-api',
   ),
-  jwtSecret: getOrDefaultEnvironmentVariable('', 't*45-1arf@123'),
+  jwtSecret: getOrDefaultEnvironmentVariable('JWT_SECRET', 't*45-1arf@123'),
 };
