@@ -6,14 +6,16 @@ services:
     build: .
     image: clean-node-api
     restart: always
-    command: npm start
+    command: npm run debug
     volumes:
       - ./dist:/usr/app/clean-architecture-api/dist
+      - ./package.json:/usr/app/clean-architecture-api/package.json
     environment:
       - MONGO_URL=mongodb://mongo:27017/clean-node-api
       - PORT=5050
     ports:
       - '5050:5050'
+      - '9222:9222'
     links:
       - mongo
 
