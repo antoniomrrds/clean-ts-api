@@ -17,9 +17,9 @@
     "test:ci:silent": "npm test -- --coverage --silent",
     "lint:fix": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix --max-warnings 0",
     "prepare": "husky install",
-    "docker:rm": "docker compose rm -s -f -v mongo node-api",
+    "docker:down": "docker compose down",
     "docker:up": "npm run build && docker compose up -d mongo node-api",
-    "docker:restart": "npm run docker:rm && npm run docker:up",
+    "docker:restart": "npm run docker:down && npm run docker:up",
     "docker:dropAll": "docker stop $(docker ps -a -q) && docker system prune -f",
     "docker:dropAll:images": "docker rmi $(docker images -a -q)"
   },

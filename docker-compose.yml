@@ -3,12 +3,12 @@ version: '3.8'
 services:
   node-api:
     container_name: node-api-container
-    build: .
-    image: clean-node-api
+    image: node:18.18.2
+    working_dir: /usr/app/clean-architecture-api
     restart: always
-    command: npm run debug
+    command: bash -c "npm install --only=dev && npm run debug"
     volumes:
-      - ./dist:/usr/app/clean-architecture-api/dist
+      - ./dist/:/usr/app/clean-architecture-api/dist/
       - ./package.json:/usr/app/clean-architecture-api/package.json
     environment:
       - MONGO_URL=mongodb://mongo:27017/clean-node-api
