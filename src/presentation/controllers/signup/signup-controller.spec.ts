@@ -6,6 +6,8 @@ import {
   AccountModel,
   HttpRequest,
   Validation,
+  Authentication,
+  AuthenticationModel,
 } from '@/presentation/controllers/signup/ports';
 import { SignUpController } from '@/presentation/controllers/signup';
 import { MissingParamError, ServerError } from '@/presentation/errors';
@@ -36,6 +38,22 @@ const makeValidation = (): Validation => {
   return new ValidationStub();
 };
 
+const makeFakeRequestAuthentication = (): HttpRequest => ({
+  body: {
+    email: 'any_email@mail.com',
+    password: 'any_password',
+  },
+});
+
+const makeAuthentication = (): Authentication => {
+  class AuthenticationStub implements Authentication {
+    async auth(authentication: AuthenticationModel): Promise<string> {
+      return new Promise(resolve => resolve('any_token'));
+    }
+  }
+  return new AuthenticationStub();
+};
+
 const makeFakeRequest = (): HttpRequest => ({
   body: {
     name: 'any_name',
@@ -49,16 +67,23 @@ type SutTypes = {
   sut: SignUpController;
   addAccountStub: AddAccount;
   validationStub: Validation;
+  authenticationStub: Authentication;
 };
 
 const makeSut = (): SutTypes => {
   const validationStub = makeValidation();
   const addAccountStub = makeAddAccount();
-  const sut = new SignUpController(addAccountStub, validationStub);
+  const authenticationStub = makeAuthentication();
+  const sut = new SignUpController(
+    addAccountStub,
+    validationStub,
+    authenticationStub,
+  );
   return {
     sut,
     addAccountStub,
     validationStub,
+    authenticationStub,
   };
 };
 
@@ -119,5 +144,14 @@ describe('Signup Controller', () => {
     // Assert
     expect(result.statusCode).toBe(500);
     expect(result.body.message).toBe('Server failed. Try again soon');
+  });
+
+  it('Should call Authentication with correct values', async () => {
+    const { sut, authenticationStub } = makeSut();
+    const authSpy = jest.spyOn(authenticationStub, 'auth');
+    const httpRequest = makeFakeRequest();
+    await sut.handle(httpRequest);
+    const valueRequest = makeFakeRequestAuthentication().body;
+    expect(authSpy).toHaveBeenCalledWith(valueRequest);
   });
 });
