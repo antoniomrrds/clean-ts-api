@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { LogErrorRepository } from '@/application/ports/db/log';
 import { AccountModel } from '@/domain/entities';
-import { LogControllerDecorator } from '@/main/decorators';
+import { LogControllerDecorator } from '@/main/decorators/log';
 import { created, serverError } from '@/presentation/helpers/http';
 import { Controller, HttpRequest, HttpResponse } from '@/presentation/ports';
 
