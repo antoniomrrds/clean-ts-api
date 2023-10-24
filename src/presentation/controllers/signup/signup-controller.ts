@@ -5,12 +5,14 @@ import {
   HttpResponse,
   AddAccount,
   Validation,
+  Authentication,
 } from '@/presentation/controllers/signup/ports';
 
 export class SignUpController implements Controller {
   constructor(
     private readonly addAccount: AddAccount,
     private readonly validation: Validation,
+    private readonly authentication: Authentication,
   ) {}
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
@@ -24,6 +26,7 @@ export class SignUpController implements Controller {
         name,
         password,
       });
+      await this.authentication.auth({ email, password });
       return created(accountData);
     } catch (error) {
       return serverError(error);
