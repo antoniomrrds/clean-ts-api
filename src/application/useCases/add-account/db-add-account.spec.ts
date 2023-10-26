@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   AccountModel,
@@ -45,7 +46,7 @@ const makeLoadAccountByEmailRepository = (): LoadAccountByEmailRepository => {
   {
     async loadByEmail(email: string): Promise<AccountModel> {
       const account: AccountModel = makeFakeAccount();
-      return new Promise(resolve => resolve(account));
+      return new Promise(resolve => resolve(null as any));
     }
   }
   return new LoadAccountByEmailRepositoryStub();
@@ -130,5 +131,13 @@ describe('DbAddAccount Usecase', () => {
     const loadSpy = jest.spyOn(loadAccountByEmailRepositoryStub, 'loadByEmail');
     await sut.add(makeFakeRequest());
     expect(loadSpy).toHaveBeenCalledWith('valid_email@mail.com');
+  });
+  it('Should return null if loadAccountByEmailRepository returns null', async () => {
+    const { sut, loadAccountByEmailRepositoryStub } = makeSut();
+    jest
+      .spyOn(loadAccountByEmailRepositoryStub, 'loadByEmail')
+      .mockReturnValueOnce(new Promise(resolve => resolve(makeFakeAccount())));
+    const account = await sut.add(makeFakeRequest());
+    expect(account).toBeNull();
   });
 });
