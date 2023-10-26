@@ -4,6 +4,7 @@ import {
   AddAccountModel,
   AddAccountRepository,
   Hasher,
+  LoadAccountByEmailRepository,
 } from '@/application/useCases/add-account/ports';
 import { DbAddAccount } from '@/application/useCases/add-account';
 
@@ -38,17 +39,40 @@ const makeFakeRequest = (): AddAccountModel => ({
   password: 'valid_password',
 });
 
+const makeLoadAccountByEmailRepository = (): LoadAccountByEmailRepository => {
+  class LoadAccountByEmailRepositoryStub
+    implements LoadAccountByEmailRepository
+  {
+    async loadByEmail(email: string): Promise<AccountModel> {
+      const account: AccountModel = makeFakeAccount();
+      return new Promise(resolve => resolve(account));
+    }
+  }
+  return new LoadAccountByEmailRepositoryStub();
+};
+
 type SutTypes = {
   sut: DbAddAccount;
   hasherStub: Hasher;
   addAccountRepositoryStub: AddAccountRepository;
+  loadAccountByEmailRepositoryStub: LoadAccountByEmailRepository;
 };
 
 const makeSut = (): SutTypes => {
   const hasherStub = makeHasher();
   const addAccountRepositoryStub = makeAddAccountRepository();
-  const sut = new DbAddAccount(hasherStub, addAccountRepositoryStub);
-  return { sut, hasherStub, addAccountRepositoryStub };
+  const loadAccountByEmailRepositoryStub = makeLoadAccountByEmailRepository();
+  const sut = new DbAddAccount(
+    hasherStub,
+    addAccountRepositoryStub,
+    loadAccountByEmailRepositoryStub,
+  );
+  return {
+    sut,
+    hasherStub,
+    addAccountRepositoryStub,
+    loadAccountByEmailRepositoryStub,
+  };
 };
 
 describe('DbAddAccount Usecase', () => {
@@ -100,5 +124,11 @@ describe('DbAddAccount Usecase', () => {
     const { sut } = makeSut();
     const account = await sut.add(makeFakeRequest());
     expect(account).toEqual(makeFakeAccount());
+  });
+  it('Should call loadAccountByEmailRepository with correct email', async () => {
+    const { sut, loadAccountByEmailRepositoryStub } = makeSut();
+    const loadSpy = jest.spyOn(loadAccountByEmailRepositoryStub, 'loadByEmail');
+    await sut.add(makeFakeRequest());
+    expect(loadSpy).toHaveBeenCalledWith('valid_email@mail.com');
   });
 });
