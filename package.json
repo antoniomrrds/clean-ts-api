@@ -1,6 +1,6 @@
 {
   "name": "clean-architecture-api",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "NodeJs Rest Api using TDD , Clean Architecture and SOLID principles and Typescript",
   "main": "dist/main/server.js",
   "scripts": {
