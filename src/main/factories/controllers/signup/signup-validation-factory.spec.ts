@@ -5,8 +5,8 @@ import {
   EmailValidation,
   RequiredFieldValidation,
   ValidationComposite,
-} from '@/presentation/helpers/validators';
-import { EmailValidator } from '@/presentation/ports/email-validator';
+} from '@/validation/validators';
+import { EmailValidator } from '@/validation/ports';
 import { Validation } from '@/presentation/ports';
 
 const makeEmailValidator = (): EmailValidator => {
@@ -18,7 +18,7 @@ const makeEmailValidator = (): EmailValidator => {
   return new EmailValidatorStub();
 };
 
-jest.mock('@/presentation/helpers/validators/validation-composite');
+jest.mock('@/validation/validators/validation-composite');
 
 describe('SignUpValidation Factory', () => {
   it('Should call ValidationComposite with all validations', () => {

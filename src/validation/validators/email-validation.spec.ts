@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { InvalidParamError } from '@/presentation/errors';
-import { EmailValidation } from '@/presentation/helpers/validators';
-import { EmailValidator } from '@/presentation/ports/email-validator';
+import { EmailValidation } from '@/validation/validators';
+import { EmailValidator } from '@/validation/ports';
 
 const makeEmailValidator = (): EmailValidator => {
   class EmailValidatorStub implements EmailValidator {

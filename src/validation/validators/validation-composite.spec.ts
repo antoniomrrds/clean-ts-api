@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { MissingParamError } from '@/presentation/errors';
-import { ValidationComposite } from '@/presentation/helpers/validators';
+import { ValidationComposite } from '@/validation/validators';
 import { Validation } from '@/presentation/ports';
 
 const makeValidation = (): Validation => {

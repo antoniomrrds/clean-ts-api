@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { InvalidParamError } from '@/presentation/errors';
 import { Validation } from '@/presentation/ports';
-import { EmailValidator } from '@/presentation/ports/email-validator';
+import { EmailValidator } from '@/validation/ports';
 
 export class EmailValidation implements Validation {
   constructor(
