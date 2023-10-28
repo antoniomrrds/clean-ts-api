@@ -11,7 +11,7 @@ import {
   AddAccount,
   Validation,
   Authentication,
-} from '@/presentation/controllers/signup/ports';
+} from '@/presentation/controllers/system-of-login/signup/ports';
 import { EmailInUseError } from '@/presentation/errors';
 
 export class SignUpController implements Controller {

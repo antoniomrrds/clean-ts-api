@@ -8,8 +8,8 @@ import {
   Validation,
   Authentication,
   AuthenticationModel,
-} from '@/presentation/controllers/signup/ports';
-import { SignUpController } from '@/presentation/controllers/signup';
+} from '@/presentation/controllers/system-of-login/signup/ports';
+import { SignUpController } from '@/presentation/controllers/system-of-login/signup';
 import {
   EmailInUseError,
   MissingParamError,

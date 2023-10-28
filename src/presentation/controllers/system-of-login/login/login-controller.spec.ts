@@ -5,8 +5,8 @@ import {
   HttpRequest,
   AuthenticationModel,
   Validation,
-} from '@/presentation/controllers/login/ports';
-import { LoginController } from '@/presentation/controllers/login';
+} from '@/presentation/controllers/system-of-login/login/ports';
+import { LoginController } from '@/presentation/controllers/system-of-login/login';
 import { MissingParamError } from '@/presentation/errors';
 import {
   badRequest,
