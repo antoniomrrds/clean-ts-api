@@ -46,13 +46,13 @@ const makeAddSurvey = (): AddSurvey => {
   return new AddSurveyStub();
 };
 
-type ValidationStubType = {
+type sutTypes = {
   sut: AddSurveyController;
   validationStub: Validation;
   addSurveyStub: AddSurvey;
 };
 
-const makeSut = (): ValidationStubType => {
+const makeSut = (): sutTypes => {
   const addSurveyStub = makeAddSurvey();
   const validationStub = makeValidation();
   const sut = new AddSurveyController(validationStub, addSurveyStub);
