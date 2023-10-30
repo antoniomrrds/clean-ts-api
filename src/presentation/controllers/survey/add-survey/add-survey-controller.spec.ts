@@ -8,7 +8,7 @@ import {
   HttpRequest,
   Validation,
 } from '@/presentation/controllers/survey/add-survey/ports';
-import { badRequest } from '@/presentation/helpers/http';
+import { badRequest, serverError } from '@/presentation/helpers/http';
 
 const makeFakeRequest = (): HttpRequest => ({
   body: {
@@ -93,5 +93,21 @@ describe('AddSurvey Controller', () => {
     await sut.handle(httpRequest);
 
     expect(addSpy).toHaveBeenCalledWith(httpRequest.body);
+  });
+
+  it('Should return 500 if AddSurvey throws', async () => {
+    const { sut, addSurveyStub } = makeSut();
+
+    jest
+      .spyOn(addSurveyStub, 'add')
+      .mockReturnValueOnce(
+        new Promise((resolve, reject) => reject(new Error())),
+      );
+
+    const httpRequest = makeFakeRequest();
+
+    const httpResponse = await sut.handle(httpRequest);
+
+    expect(httpResponse).toEqual(serverError(new Error()));
   });
 });
