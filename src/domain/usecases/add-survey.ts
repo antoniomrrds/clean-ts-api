@@ -8,5 +8,5 @@ export type SurveyAnswerModel = {
 };
 
 export interface AddSurvey {
-  add(data: AddSurveyModel): Promise<void>;
+  add(surveyData: AddSurveyModel): Promise<void>;
 }

@@ -38,7 +38,7 @@ const makeValidation = () => {
 
 const makeAddSurvey = (): AddSurvey => {
   class AddSurveyStub implements AddSurvey {
-    async add(data: AddSurveyModel): Promise<void> {
+    async add(surveyData: AddSurveyModel): Promise<void> {
       return new Promise(resolve => resolve());
     }
   }
