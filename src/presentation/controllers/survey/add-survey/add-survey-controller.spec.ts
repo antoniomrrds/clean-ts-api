@@ -8,7 +8,11 @@ import {
   HttpRequest,
   Validation,
 } from '@/presentation/controllers/survey/add-survey/ports';
-import { badRequest, serverError } from '@/presentation/helpers/http';
+import {
+  badRequest,
+  noContent,
+  serverError,
+} from '@/presentation/helpers/http';
 
 const makeFakeRequest = (): HttpRequest => ({
   body: {
@@ -109,5 +113,14 @@ describe('AddSurvey Controller', () => {
     const httpResponse = await sut.handle(httpRequest);
 
     expect(httpResponse).toEqual(serverError(new Error()));
+  });
+  it('Should return 204 on success', async () => {
+    const { sut } = makeSut();
+
+    const httpRequest = makeFakeRequest();
+
+    const httpResponse = await sut.handle(httpRequest);
+
+    expect(httpResponse).toEqual(noContent());
   });
 });
