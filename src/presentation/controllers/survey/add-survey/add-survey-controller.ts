@@ -7,7 +7,7 @@ import {
   HttpResponse,
   Validation,
 } from '@/presentation/controllers/survey/add-survey/ports';
-import { badRequest } from '@/presentation/helpers/http';
+import { badRequest, serverError } from '@/presentation/helpers/http';
 
 export class AddSurveyController implements Controller {
   constructor(
@@ -15,16 +15,20 @@ export class AddSurveyController implements Controller {
     private readonly addSurvey: AddSurvey,
   ) {}
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
-    const error = this.validate.validate(httpRequest.body);
-    if (error) {
-      return badRequest(error);
-    }
-    const { question, answers } = httpRequest.body;
-    await this.addSurvey.add({
-      question,
-      answers,
-    });
+    try {
+      const error = this.validate.validate(httpRequest.body);
+      if (error) {
+        return badRequest(error);
+      }
+      const { question, answers } = httpRequest.body;
+      await this.addSurvey.add({
+        question,
+        answers,
+      });
 
-    return null as any;
+      return null as any;
+    } catch (error) {
+      return serverError(error);
+    }
   }
 }
