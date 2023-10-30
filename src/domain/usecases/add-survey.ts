@@ -3,7 +3,7 @@ export type AddSurveyModel = {
   answers: SurveyAnswerModel[];
 };
 export type SurveyAnswerModel = {
-  image: string;
+  image?: string;
   answer: string;
 };
 
