@@ -5,7 +5,7 @@ import { Collection } from 'mongodb';
 const makeSut = (): SurveyMongoRepository => {
   return new SurveyMongoRepository();
 };
-let accountCollection: Collection;
+let surveyCollection: Collection;
 describe('Account Mongo Repository', () => {
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL as string);
@@ -16,8 +16,8 @@ describe('Account Mongo Repository', () => {
   });
 
   beforeEach(async () => {
-    accountCollection = await MongoHelper.getCollection('surveys');
-    await accountCollection?.deleteMany({});
+    surveyCollection = await MongoHelper.getCollection('surveys');
+    await surveyCollection?.deleteMany({});
   });
 
   it('Should add a survey on success', async () => {
@@ -34,7 +34,7 @@ describe('Account Mongo Repository', () => {
         },
       ],
     });
-    const survey = await accountCollection.findOne({
+    const survey = await surveyCollection.findOne({
       question: 'any_question',
     });
     expect(survey).toBeTruthy();
