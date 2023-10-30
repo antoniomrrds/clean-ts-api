@@ -7,7 +7,11 @@ import {
   HttpResponse,
   Validation,
 } from '@/presentation/controllers/survey/add-survey/ports';
-import { badRequest, serverError } from '@/presentation/helpers/http';
+import {
+  badRequest,
+  noContent,
+  serverError,
+} from '@/presentation/helpers/http';
 
 export class AddSurveyController implements Controller {
   constructor(
@@ -26,7 +30,7 @@ export class AddSurveyController implements Controller {
         answers,
       });
 
-      return null as any;
+      return noContent();
     } catch (error) {
       return serverError(error);
     }
