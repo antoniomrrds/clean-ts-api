@@ -1,10 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { AccountModel } from '@/domain/entities';
-import { LoadAccountByToken } from '@/domain/usecases';
+
+import { AuthMiddleware } from '@/presentation/middlewares';
 import { AccessDeniedError } from '@/presentation/errors';
 import { forbidden, ok, serverError } from '@/presentation/helpers/http';
-import { AuthMiddleware } from '@/presentation/middlewares';
-import { HttpRequest } from '@/presentation/ports';
+import {
+  HttpRequest,
+  LoadAccountByToken,
+  AccountModel,
+} from '@/presentation/middlewares/ports';
 
 const makeFakeAccount = (): AccountModel => ({
   id: 'any_id',

@@ -1,8 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { LoadAccountByToken } from '@/domain/usecases';
 import { AccessDeniedError } from '@/presentation/errors';
 import { forbidden, ok, serverError } from '@/presentation/helpers/http';
-import { HttpRequest, HttpResponse, Middleware } from '@/presentation/ports';
+import {
+  HttpRequest,
+  LoadAccountByToken,
+  Middleware,
+  HttpResponse,
+} from '@/presentation/middlewares/ports';
 
 export class AuthMiddleware implements Middleware {
   constructor(
