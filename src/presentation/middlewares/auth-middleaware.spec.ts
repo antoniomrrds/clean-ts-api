@@ -36,6 +36,12 @@ const makeSut = (): SutTypes => {
   };
 };
 
+const makeFakeRequest = (): HttpRequest => ({
+  headers: {
+    'x-access-token': 'any_token',
+  },
+});
+
 describe('Auth Middleware', () => {
   it('Should return 403 if no x-access-token exists in hearders', async () => {
     const { sut } = makeSut();
@@ -49,11 +55,7 @@ describe('Auth Middleware', () => {
   it('Should call LoadAccountByToken with correct accessToken', async () => {
     const { sut, loadAccountByTokenStub } = makeSut();
     const loadSpy = jest.spyOn(loadAccountByTokenStub, 'load');
-    await sut.handle({
-      headers: {
-        'x-access-token': 'any_token',
-      },
-    });
+    await sut.handle(makeFakeRequest());
     expect(loadSpy).toHaveBeenCalledWith('any_token');
   });
 });
