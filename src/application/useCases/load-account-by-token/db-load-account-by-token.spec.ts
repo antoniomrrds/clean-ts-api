@@ -78,4 +78,13 @@ describe('DBLoadAccountByToken Usecase', () => {
     await sut.load('any_token', 'any_role');
     expect(loadByTokenSpy).toHaveBeenCalledWith('any_token', 'any_role');
   });
+
+  it('Should return null if loadAccountByTokenRepositoryStub return null', async () => {
+    const { sut, loadAccountByTokenRepositoryStub } = makeSut();
+    jest
+      .spyOn(loadAccountByTokenRepositoryStub, 'loadByToken')
+      .mockReturnValueOnce(Promise.resolve(null as any));
+    const account = await sut.load('any_token', 'any_role');
+    expect(account).toBeNull();
+  });
 });
