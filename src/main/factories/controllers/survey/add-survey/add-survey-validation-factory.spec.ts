@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { makeAddSurveyValidation } from '@/main/factories/controllers/add-survey';
+import { makeAddSurveyValidation } from '@/main/factories/controllers/survey/add-survey';
 import {
   EmailValidation,
   RequiredFieldValidation,

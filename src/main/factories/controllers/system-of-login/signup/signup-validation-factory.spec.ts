@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { makeSignUpValidation } from '@/main/factories/controllers/signup';
+import { makeSignUpValidation } from '@/main/factories/controllers/system-of-login/signup';
 import {
   CompareFieldsValidation,
   EmailValidation,
