@@ -1,8 +1,11 @@
-dist: focal
-node_js:
-  - 18
+dist: bionic
+node_js: "stable"
+before_install:
+  - npm config --global rm progress
+  - npm install -g npm@latest
+
 language: node_js
 script:
   - eslint 'src/**'
-  - npm run test:coveralls
+  - npm run test:coveralls --no-progress
 
