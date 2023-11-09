@@ -1,8 +1,6 @@
-sudo: false
+dist: bionic
+node_js: "stable"
 language: node_js
-node_js:
-  - 20
-  - node
 script:
   - eslint 'src/**'
   - npm run test:coveralls
