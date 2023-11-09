@@ -1,4 +1,4 @@
-dist: bionic
+dist: focal
 node_js:
   - 18
 language: node_js
