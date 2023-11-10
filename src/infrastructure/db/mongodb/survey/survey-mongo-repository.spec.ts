@@ -1,6 +1,7 @@
 import { MongoHelper } from '@/infrastructure/db/mongodb/helpers';
 import { SurveyMongoRepository } from '@/infrastructure/db/mongodb/survey';
 import { Collection } from 'mongodb';
+import MockDate from 'mockdate';
 
 const makeSut = (): SurveyMongoRepository => {
   return new SurveyMongoRepository();
@@ -9,6 +10,13 @@ let surveyCollection: Collection;
 describe('Account Mongo Repository', () => {
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL as string);
+  });
+
+  beforeAll(() => {
+    MockDate.set(new Date());
+  });
+  afterEach(() => {
+    MockDate.reset();
   });
 
   afterAll(async () => {
@@ -33,6 +41,7 @@ describe('Account Mongo Repository', () => {
           answer: 'other_answer',
         },
       ],
+      date: new Date(),
     });
     const survey = await surveyCollection.findOne({
       question: 'any_question',

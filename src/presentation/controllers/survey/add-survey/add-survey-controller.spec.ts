@@ -14,6 +14,8 @@ import {
   serverError,
 } from '@/presentation/helpers/http';
 
+import MockDate from 'mockdate';
+
 const makeFakeRequest = (): HttpRequest => ({
   body: {
     question: 'any_question',
@@ -23,6 +25,7 @@ const makeFakeRequest = (): HttpRequest => ({
         answer: 'any_answer',
       },
     ],
+    date: new Date(),
   },
 });
 
@@ -61,6 +64,13 @@ const makeSut = (): sutTypes => {
 };
 
 describe('AddSurvey Controller', () => {
+  beforeAll(() => {
+    MockDate.set(new Date());
+  });
+
+  afterEach(() => {
+    MockDate.reset();
+  });
   test('Should call Validation with correct values', async () => {
     const { sut, validationStub } = makeSut();
 
