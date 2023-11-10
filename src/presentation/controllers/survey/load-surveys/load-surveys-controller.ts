@@ -6,11 +6,12 @@ import {
   HttpResponse,
   LoadSurveys,
 } from '@/presentation/controllers/survey/load-surveys/ports';
+import { ok } from '@/presentation/helpers/http';
 
 export class LoadSurveysController implements Controller {
   constructor(private readonly loadSurveys: LoadSurveys) {}
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
-    await this.loadSurveys.load();
-    return null as any;
+    const surveys = await this.loadSurveys.load();
+    return ok(surveys);
   }
 }
