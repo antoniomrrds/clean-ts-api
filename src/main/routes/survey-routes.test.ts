@@ -40,48 +40,54 @@ describe('Survey Routes', () => {
         })
         .expect(403);
     });
+
+    it('Should return 204 on add survey with valid accessToken', async () => {
+      const result = await accountCollection.insertOne({
+        name: 'any_name',
+        email: 'any_email@mail.com',
+        password: 'any_password',
+        role: 'admin',
+      });
+
+      const fakeAccount = await accountCollection?.findOne({
+        _id: result?.insertedId,
+      });
+
+      const id = fakeAccount?._id;
+      const accessToken = sign({ id }, jwtSecret);
+      await accountCollection.updateOne(
+        {
+          _id: id,
+        },
+        {
+          $set: {
+            accessToken,
+          },
+        },
+      );
+
+      await request(app)
+        .post('/api/surveys')
+        .set('x-access-token', accessToken)
+        .send({
+          question: 'Question',
+          answers: [
+            {
+              image: 'http://image-name.com/image.jpg',
+              answer: 'Answer 1',
+            },
+            {
+              answer: 'Answer 2',
+            },
+          ],
+        })
+        .expect(204);
+    });
   });
 
-  it('Should return 204 on add survey with valid accessToken', async () => {
-    const result = await accountCollection.insertOne({
-      name: 'any_name',
-      email: 'any_email@mail.com',
-      password: 'any_password',
-      role: 'admin',
+  describe('GET /surveys', () => {
+    it('Should return 403 on load survey without accessToken', async () => {
+      await request(app).get('/api/surveys').expect(403);
     });
-
-    const fakeAccount = await accountCollection?.findOne({
-      _id: result?.insertedId,
-    });
-
-    const id = fakeAccount?._id;
-    const accessToken = sign({ id }, jwtSecret);
-    await accountCollection.updateOne(
-      {
-        _id: id,
-      },
-      {
-        $set: {
-          accessToken,
-        },
-      },
-    );
-
-    await request(app)
-      .post('/api/surveys')
-      .set('x-access-token', accessToken)
-      .send({
-        question: 'Question',
-        answers: [
-          {
-            image: 'http://image-name.com/image.jpg',
-            answer: 'Answer 1',
-          },
-          {
-            answer: 'Answer 2',
-          },
-        ],
-      })
-      .expect(204);
   });
 });
