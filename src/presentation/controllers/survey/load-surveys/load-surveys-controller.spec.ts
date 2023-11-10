@@ -3,7 +3,7 @@ import {
   SurveyModel,
   LoadSurveys,
 } from '@/presentation/controllers/survey/load-surveys/ports';
-import { ok } from '@/presentation/helpers/http';
+import { ok, serverError } from '@/presentation/helpers/http';
 import MockDate from 'mockdate';
 
 const makeFakeSurveys = (): SurveyModel[] => {
@@ -74,5 +74,11 @@ describe('LoadSurveys Controller', () => {
     const { sut } = makeSut();
     const httpResponse = await sut.handle({});
     expect(httpResponse).toEqual(ok(makeFakeSurveys()));
+  });
+  it('Should throw if LoadSurveys throws', async () => {
+    const { sut, loadSurveysStub } = makeSut();
+    jest.spyOn(loadSurveysStub, 'load').mockRejectedValueOnce(new Error());
+    const httpResponse = await sut.handle({});
+    expect(httpResponse).toEqual(serverError(new Error()));
   });
 });
