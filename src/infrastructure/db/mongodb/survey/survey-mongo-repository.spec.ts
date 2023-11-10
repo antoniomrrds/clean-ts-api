@@ -15,7 +15,7 @@ describe('Account Mongo Repository', () => {
   beforeAll(() => {
     MockDate.set(new Date());
   });
-  afterEach(() => {
+  afterAll(() => {
     MockDate.reset();
   });
 

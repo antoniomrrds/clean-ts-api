@@ -61,7 +61,7 @@ describe('LoadSurveys Controller', () => {
     MockDate.set(new Date());
   });
 
-  afterEach(() => {
+  afterAll(() => {
     MockDate.reset();
   });
   it('Should call LoadSurveys', () => {

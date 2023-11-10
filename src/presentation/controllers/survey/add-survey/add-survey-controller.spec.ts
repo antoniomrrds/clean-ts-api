@@ -68,7 +68,7 @@ describe('AddSurvey Controller', () => {
     MockDate.set(new Date());
   });
 
-  afterEach(() => {
+  afterAll(() => {
     MockDate.reset();
   });
   test('Should call Validation with correct values', async () => {
