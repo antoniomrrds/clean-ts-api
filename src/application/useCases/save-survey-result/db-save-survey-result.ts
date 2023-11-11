@@ -1,10 +1,11 @@
 import {
-  SaveSurveyResultRepository,
   SurveyResultModel,
   SaveSurveyResultModel,
+  SaveSurveyResultRepository,
+  SaveSurveyResult,
 } from '@/application/useCases/save-survey-result/ports';
 
-export class DbSaveSurveyResult implements SaveSurveyResultRepository {
+export class DbSaveSurveyResult implements SaveSurveyResult {
   constructor(
     private readonly saveSurveyResultRepository: SaveSurveyResultRepository,
   ) {}
