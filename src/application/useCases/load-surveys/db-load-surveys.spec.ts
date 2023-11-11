@@ -1,6 +1,9 @@
-import { LoadSurveysRepository } from '@/application/ports/db/survey';
 import { DbLoadSurveys } from '@/application/useCases/load-surveys';
-import { SurveyModel } from '@/domain/entities';
+import {
+  SurveyModel,
+  LoadSurveysRepository,
+} from '@/application/useCases/load-surveys/ports';
+
 import MockDate from 'mockdate';
 const makeFakeSurveys = (): SurveyModel[] => {
   return [

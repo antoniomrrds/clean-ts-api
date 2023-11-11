@@ -1,6 +1,8 @@
-import { LoadSurveys } from '@/domain/usecases';
-import { LoadSurveysRepository } from '@/application/ports/db/survey';
-import { SurveyModel } from '@/domain/entities';
+import {
+  SurveyModel,
+  LoadSurveysRepository,
+  LoadSurveys,
+} from '@/application/useCases/load-surveys/ports';
 
 export class DbLoadSurveys implements LoadSurveys {
   constructor(private readonly loadSurveysRepository: LoadSurveysRepository) {}

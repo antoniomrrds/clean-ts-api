@@ -1,9 +1,9 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
-import { Decrypter } from '@/application/ports/criptography';
-import { LoadAccountByTokenRepository } from '@/application/ports/db/account';
-import { AccountModel } from '@/domain/entities';
-import { LoadAccountByToken } from '@/domain/usecases';
+import {
+  Decrypter,
+  LoadAccountByTokenRepository,
+  AccountModel,
+  LoadAccountByToken,
+} from '@/application/useCases/load-account-by-token/ports';
 
 export class DbLoadAccountByToken implements LoadAccountByToken {
   constructor(
