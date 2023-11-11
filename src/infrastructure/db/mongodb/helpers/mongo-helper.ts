@@ -27,6 +27,10 @@ export const MongoHelper = {
       id: String(_id),
     } as T;
   },
+
+  mapCollection<T>(collection: any[]): T[] {
+    return collection.map(c => MongoHelper.map<T>(c));
+  },
   objectId(id: string): any {
     return new ObjectId(id);
   },
