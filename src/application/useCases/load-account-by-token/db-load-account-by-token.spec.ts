@@ -1,12 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-
+import { Decrypter } from '@/application/ports/criptography';
+import { LoadAccountByTokenRepository } from '@/application/ports/db/account';
 import { DbLoadAccountByToken } from '@/application/useCases/load-account-by-token';
-import {
-  Decrypter,
-  LoadAccountByTokenRepository,
-  AccountModel,
-} from '@/application/useCases/load-account-by-token/ports';
+import { AccountModel } from '@/domain/entities';
+
 const makeDecrypter = (): Decrypter => {
   class DecrypterStub implements Decrypter {
     async decrypt(value: string): Promise<string> {

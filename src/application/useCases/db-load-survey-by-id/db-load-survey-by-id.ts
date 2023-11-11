@@ -1,8 +1,7 @@
-import {
-  LoadSurveyByIdRepository,
-  SurveyModel,
-  LoadSurveyById,
-} from '@/application/useCases/db-load-survey-by-id/ports';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { LoadSurveyByIdRepository } from '@/application/ports/db/survey';
+import { SurveyModel } from '@/domain/entities';
+import { LoadSurveyById } from '@/domain/usecases';
 
 export class DbLoadSurveyById implements LoadSurveyById {
   constructor(

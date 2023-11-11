@@ -1,10 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { LoadSurveyByIdRepository } from '@/application/ports/db/survey';
 import { DbLoadSurveyById } from '@/application/useCases/db-load-survey-by-id';
-import {
-  LoadSurveyByIdRepository,
-  SurveyModel,
-} from '@/application/useCases/db-load-survey-by-id/ports';
-
+import { SurveyModel } from '@/domain/entities';
 import MockDate from 'mockdate';
 
 const makeFakeSurvey = (): SurveyModel => {
