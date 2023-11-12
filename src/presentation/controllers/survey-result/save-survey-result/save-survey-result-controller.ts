@@ -7,7 +7,7 @@ import {
 } from '@/presentation/controllers/survey-result/save-survey-result/ports';
 
 import { InvalidParamError } from '@/presentation/errors';
-import { forbidden, serverError } from '@/presentation/helpers/http';
+import { forbidden, ok, serverError } from '@/presentation/helpers/http';
 
 export class SaveSurveyResultController implements Controller {
   constructor(
@@ -29,15 +29,14 @@ export class SaveSurveyResultController implements Controller {
       } else {
         return forbidden(new InvalidParamError('surveyId'));
       }
-      await this.saveSurveyResult.save({
+      const surveyResult = await this.saveSurveyResult.save({
         surveyId,
         accountId: accountId!,
         answer,
         date: new Date(),
       });
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      return null as any;
+      return ok(surveyResult);
     } catch (error) {
       return serverError(error);
     }
