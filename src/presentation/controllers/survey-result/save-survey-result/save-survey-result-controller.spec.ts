@@ -11,7 +11,7 @@ import { forbidden, serverError } from '@/presentation/helpers/http';
 
 const makeFakeRequest = (): HttpRequest => ({
   params: {
-    surveyId: 'any_id',
+    surveyId: 'any_survey_id',
   },
 });
 const makeFakeSurvey = (): SurveyModel => ({
@@ -53,23 +53,39 @@ describe('SaveSurveyResult Controller', () => {
   it('should call LoadSurveyById with correct values', async () => {
     const { sut, loadSurveyByIdStub } = makeSut();
     const loadByIdSpy = jest.spyOn(loadSurveyByIdStub, 'loadById');
-    await sut.handle(makeFakeRequest());
-    expect(loadByIdSpy).toHaveBeenCalledWith('any_id');
+    const httpRequest = makeFakeRequest();
+    await sut.handle(httpRequest);
+
+    await expect(loadByIdSpy).toHaveBeenCalledWith(httpRequest.params.surveyId);
   });
+
   it('should return 403 if LoadSurveyById returns null', async () => {
     const { sut, loadSurveyByIdStub } = makeSut();
     jest
       .spyOn(loadSurveyByIdStub, 'loadById')
       .mockReturnValueOnce(Promise.resolve(null as any));
+
     const httpResponse = await sut.handle(makeFakeRequest());
     expect(httpResponse).toEqual(forbidden(new InvalidParamError('surveyId')));
   });
   it('should return 500 if LoadSurveyById throws', async () => {
     const { sut, loadSurveyByIdStub } = makeSut();
-    jest
-      .spyOn(loadSurveyByIdStub, 'loadById')
-      .mockReturnValueOnce(Promise.reject(new Error()));
+    jest.spyOn(loadSurveyByIdStub, 'loadById').mockImplementationOnce(() => {
+      throw new Error();
+    });
     const httpResponse = await sut.handle(makeFakeRequest());
     expect(httpResponse).toEqual(serverError(new Error()));
+  });
+  it('Should return 403 if an invalid answer is provided', async () => {
+    const { sut } = makeSut();
+    const httpResponse = await sut.handle({
+      params: {
+        surveyId: 'any_survey_id',
+      },
+      body: {
+        answer: 'wrong_answer',
+      },
+    });
+    expect(httpResponse).toEqual(forbidden(new InvalidParamError('answer')));
   });
 });
