@@ -1,6 +1,6 @@
-import { SaveSurveyResultRepository } from '@/application/ports/db/survey';
+import { SaveSurveyResultRepository } from '@/application/ports/db/survey-result';
 import { SurveyResultModel } from '@/domain/entities';
-import { SaveSurveyResultModel } from '@/domain/usecases/save-survey-result';
+import { SaveSurveyResultModel } from '@/domain/usecases/survey-result/save-survey-result';
 import { MongoHelper } from '@/infrastructure/db/mongodb/helpers';
 
 export class SurveyResultMongoRepository implements SaveSurveyResultRepository {

@@ -5,7 +5,7 @@ import {
 } from '@/application/ports/db/survey';
 import { SurveyModel } from '@/domain/entities';
 
-import { AddSurveyModel } from '@/domain/usecases';
+import { AddSurveyModel } from '@/domain/usecases/survey';
 import { MongoHelper } from '@/infrastructure/db/mongodb/helpers';
 export class SurveyMongoRepository
   implements

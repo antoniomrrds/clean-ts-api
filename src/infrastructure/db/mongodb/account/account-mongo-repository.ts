@@ -5,7 +5,7 @@ import {
   UpdateAccessTokenRepository,
 } from '@/application/ports/db/account';
 import { AccountModel } from '@/domain/entities';
-import { AddAccountModel } from '@/domain/usecases';
+import { AddAccountModel } from '@/domain/usecases/account';
 import { MongoHelper } from '@/infrastructure/db/mongodb/helpers';
 
 export class AccountMongoRepository
