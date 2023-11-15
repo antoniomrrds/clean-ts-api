@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { InvalidParamError } from '@/presentation/errors';
 import { ObjectIdValidator } from '@/validation/ports';
 import { IdParamValidation } from '@/validation/validators';
 
@@ -18,7 +19,7 @@ type SutTypes = {
 
 const makeSut = (): SutTypes => {
   const objectIdValidatorStub = makeObjectIdValidator();
-  const sut = new IdParamValidation(objectIdValidatorStub);
+  const sut = new IdParamValidation('fieldId', objectIdValidatorStub);
   return {
     sut,
     objectIdValidatorStub,
@@ -35,5 +36,13 @@ describe('IdParam Validation', () => {
 
     sut.validate('any_id');
     expect(isValidObjectIdSpy).toHaveBeenCalledWith('any_id');
+  });
+  it('should return an error if ObjectIdValidator returns false', () => {
+    const { sut, objectIdValidatorStub } = makeSut();
+    jest
+      .spyOn(objectIdValidatorStub, 'isValidObjectId')
+      .mockReturnValueOnce(false);
+    const error = sut.validate('invalid_id');
+    expect(error).toEqual(new InvalidParamError('fieldId'));
   });
 });
