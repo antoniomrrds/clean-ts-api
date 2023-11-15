@@ -3,7 +3,7 @@ version: '3.8'
 services:
   node-api:
     container_name: node-api-container
-    image: node:18.18.2
+    image: node:20
     working_dir: /usr/app/clean-architecture-api
     restart: always
     command: bash -c "npm install --only=dev && npm run debug"
