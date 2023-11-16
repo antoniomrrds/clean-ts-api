@@ -8,7 +8,12 @@ import {
 } from '@/presentation/controllers/survey-result/save-survey-result/ports';
 
 import { InvalidParamError } from '@/presentation/errors';
-import { forbidden, ok, serverError } from '@/presentation/helpers/http';
+import {
+  badRequest,
+  forbidden,
+  ok,
+  serverError,
+} from '@/presentation/helpers/http';
 
 export class SaveSurveyResultController implements Controller {
   constructor(
@@ -22,7 +27,10 @@ export class SaveSurveyResultController implements Controller {
       const { answer } = httpRequest.body;
       const { accountId } = httpRequest;
 
-      this.validation.validate(surveyId);
+      const error = this.validation.validate(surveyId);
+      if (error) {
+        return badRequest(error);
+      }
       const survey = await this.loadSurveyById.loadById(surveyId);
       if (survey) {
         const answers = survey.answers.map(a => a.answer);
