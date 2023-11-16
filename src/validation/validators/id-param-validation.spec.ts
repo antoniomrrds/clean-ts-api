@@ -1,20 +1,20 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { InvalidParamError } from '@/presentation/errors';
-import { ObjectIdValidator } from '@/validation/ports';
+import { IdValidator } from '@/validation/ports';
 import { IdParamValidation } from '@/validation/validators';
 
-const makeObjectIdValidator = (): ObjectIdValidator => {
-  class ObjectIdValidatorStub implements ObjectIdValidator {
-    isValidObjectId(id: string): boolean {
+const makeObjectIdValidator = (): IdValidator => {
+  class IdValidatorStub implements IdValidator {
+    isValidId(id: string): boolean {
       return true;
     }
   }
-  return new ObjectIdValidatorStub();
+  return new IdValidatorStub();
 };
 
 type SutTypes = {
   sut: IdParamValidation;
-  objectIdValidatorStub: ObjectIdValidator;
+  objectIdValidatorStub: IdValidator;
 };
 
 const makeSut = (): SutTypes => {
@@ -27,21 +27,16 @@ const makeSut = (): SutTypes => {
 };
 
 describe('IdParam Validation', () => {
-  it('should call ObjectIdValidator with correct id', () => {
+  it('should call IdValidator with correct id', () => {
     const { sut, objectIdValidatorStub } = makeSut();
-    const isValidObjectIdSpy = jest.spyOn(
-      objectIdValidatorStub,
-      'isValidObjectId',
-    );
+    const isValidObjectIdSpy = jest.spyOn(objectIdValidatorStub, 'isValidId');
 
     sut.validate('any_id');
     expect(isValidObjectIdSpy).toHaveBeenCalledWith('any_id');
   });
-  it('should return an error if ObjectIdValidator returns false', () => {
+  it('should return an error if IdValidator returns false', () => {
     const { sut, objectIdValidatorStub } = makeSut();
-    jest
-      .spyOn(objectIdValidatorStub, 'isValidObjectId')
-      .mockReturnValueOnce(false);
+    jest.spyOn(objectIdValidatorStub, 'isValidId').mockReturnValueOnce(false);
     const error = sut.validate('invalid_id');
     expect(error).toEqual(new InvalidParamError('fieldId'));
   });

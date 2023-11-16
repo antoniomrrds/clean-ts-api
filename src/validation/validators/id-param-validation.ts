@@ -1,14 +1,14 @@
 import { InvalidParamError } from '@/presentation/errors';
 import { Validation } from '@/presentation/ports';
-import { ObjectIdValidator } from '@/validation/ports';
+import { IdValidator } from '@/validation/ports';
 
 export class IdParamValidation implements Validation {
   constructor(
     private readonly fieldName: string,
-    private readonly objectIdValidator: ObjectIdValidator,
+    private readonly idValidator: IdValidator,
   ) {}
   validate(id: string): Error | undefined {
-    const isValid = this.objectIdValidator.isValidObjectId(id);
+    const isValid = this.idValidator.isValidId(id);
     if (!isValid) {
       return new InvalidParamError(this.fieldName);
     }
