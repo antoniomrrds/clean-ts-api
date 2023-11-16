@@ -12,7 +12,7 @@ describe('MongoIdValidator Adapter', () => {
     const sut = makeSut();
     jest.spyOn(MongoHelper, 'isValidObjectId').mockReturnValueOnce(false);
 
-    const isValid = sut.isValidId('invalidObjectId');
+    const isValid = sut.isValidId('invalid_Id');
 
     expect(isValid).toBe(false);
   });
@@ -20,8 +20,16 @@ describe('MongoIdValidator Adapter', () => {
     const sut = makeSut();
     jest.spyOn(MongoHelper, 'isValidObjectId').mockReturnValueOnce(true);
 
-    const isValid = sut.isValidId('validObjectId');
+    const isValid = sut.isValidId('valid_id');
 
     expect(isValid).toBe(true);
+  });
+  it('Should call MongoHelper.isValidObjectId with correct id', () => {
+    const sut = makeSut();
+    const isValidObjectIdSpy = jest.spyOn(MongoHelper, 'isValidObjectId');
+
+    sut.isValidId('any_id');
+
+    expect(isValidObjectIdSpy).toHaveBeenCalledWith('any_id');
   });
 });
