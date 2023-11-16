@@ -34,4 +34,7 @@ export const MongoHelper = {
   objectId(id: string): any {
     return new ObjectId(id);
   },
+  isValidObjectId(id: string): boolean {
+    return ObjectId.isValid(id);
+  },
 };
