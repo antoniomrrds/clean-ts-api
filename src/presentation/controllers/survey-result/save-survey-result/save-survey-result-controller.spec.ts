@@ -9,9 +9,15 @@ import {
   SurveyResultModel,
   SaveSurveyResult,
   SaveSurveyResultModel,
+  Validation,
 } from '@/presentation/controllers/survey-result/save-survey-result/ports';
 import { InvalidParamError } from '@/presentation/errors';
-import { forbidden, ok, serverError } from '@/presentation/helpers/http';
+import {
+  badRequest,
+  forbidden,
+  ok,
+  serverError,
+} from '@/presentation/helpers/http';
 import MockDate from 'mockdate';
 
 const makeFakeRequest = (): HttpRequest => ({
@@ -59,16 +65,29 @@ const makeSaveSurveyResultStub = (): SaveSurveyResult => {
   return new SaveSurveyResultStub();
 };
 
+const makeValidation = () => {
+  class ValidationStub implements Validation {
+    validate(input: any): Error {
+      return null as any;
+    }
+  }
+
+  return new ValidationStub();
+};
+
 type SutTypes = {
   sut: SaveSurveyResultController;
   loadSurveyByIdStub: LoadSurveyById;
   saveSurveyResultStub: SaveSurveyResult;
+  validationStub: Validation;
 };
 
 const makeSut = (): SutTypes => {
+  const validationStub = makeValidation();
   const saveSurveyResultStub = makeSaveSurveyResultStub();
   const loadSurveyByIdStub = makeLoadSurveyByIdStub();
   const sut = new SaveSurveyResultController(
+    validationStub,
     loadSurveyByIdStub,
     saveSurveyResultStub,
   );
@@ -76,6 +95,7 @@ const makeSut = (): SutTypes => {
     sut,
     loadSurveyByIdStub,
     saveSurveyResultStub,
+    validationStub,
   };
 };
 
@@ -86,6 +106,17 @@ describe('SaveSurveyResult Controller', () => {
 
   afterAll(() => {
     MockDate.reset();
+  });
+  it('Should call Validation with correct values', async () => {
+    const { sut, validationStub } = makeSut();
+
+    const validateSpy = jest.spyOn(validationStub, 'validate');
+
+    const httpRequest = makeFakeRequest();
+
+    await sut.handle(httpRequest);
+
+    expect(validateSpy).toHaveBeenCalledWith(httpRequest.params.surveyId);
   });
   it('should call LoadSurveyById with correct values', async () => {
     const { sut, loadSurveyByIdStub } = makeSut();
