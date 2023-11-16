@@ -118,6 +118,21 @@ describe('SaveSurveyResult Controller', () => {
 
     expect(validateSpy).toHaveBeenCalledWith(httpRequest.params.surveyId);
   });
+  it('Should return 400 if Validation returns an error', async () => {
+    const { sut, validationStub } = makeSut();
+
+    jest
+      .spyOn(validationStub, 'validate')
+      .mockReturnValueOnce(new InvalidParamError('any_field'));
+
+    const httpRequest = makeFakeRequest();
+
+    const httpResponse = await sut.handle(httpRequest);
+
+    expect(httpResponse).toEqual(
+      badRequest(new InvalidParamError('any_field')),
+    );
+  });
   it('should call LoadSurveyById with correct values', async () => {
     const { sut, loadSurveyByIdStub } = makeSut();
     const loadByIdSpy = jest.spyOn(loadSurveyByIdStub, 'loadById');
