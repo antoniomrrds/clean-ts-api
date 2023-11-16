@@ -7,10 +7,14 @@ export class IdParamValidation implements Validation {
     private readonly fieldName: string,
     private readonly idValidator: IdValidator,
   ) {}
+
   validate(id: string): Error | undefined {
-    const isValid = this.idValidator.isValidId(id);
-    if (!isValid) {
+    if (!this.isValidId(id)) {
       return new InvalidParamError(this.fieldName);
     }
+  }
+
+  private isValidId(id: string): boolean {
+    return this.idValidator.isValidId(id);
   }
 }
