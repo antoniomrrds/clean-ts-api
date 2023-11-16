@@ -32,4 +32,14 @@ describe('MongoIdValidator Adapter', () => {
 
     expect(isValidObjectIdSpy).toHaveBeenCalledWith('any_id');
   });
+  it('Should return false if MongoHelper.isValidObjectId throws an error', () => {
+    const sut = makeSut();
+    jest.spyOn(MongoHelper, 'isValidObjectId').mockImplementationOnce(() => {
+      throw new Error();
+    });
+
+    const isValid = sut.isValidId('any_id');
+
+    expect(isValid).toBe(false);
+  });
 });
