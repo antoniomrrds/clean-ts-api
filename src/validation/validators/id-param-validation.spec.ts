@@ -40,4 +40,9 @@ describe('IdParam Validation', () => {
     const error = sut.validate('invalid_id');
     expect(error).toEqual(new InvalidParamError('fieldId'));
   });
+  it('should not return if IdValidator returns true', () => {
+    const { sut } = makeSut();
+    const error = sut.validate('valid_id');
+    expect(error).toBeFalsy();
+  });
 });
