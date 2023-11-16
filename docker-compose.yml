@@ -6,10 +6,11 @@ services:
     image: node:20
     working_dir: /usr/app/clean-architecture-api
     restart: always
-    command: bash -c "npm install --only=dev && npm run debug"
+    command: bash -c "npm ci && npm run debug"
     volumes:
       - ./dist/:/usr/app/clean-architecture-api/dist/
       - ./package.json:/usr/app/clean-architecture-api/package.json
+      - ./package-lock.json:/usr/app/clean-architecture-api/package-lock.json
     environment:
       - MONGO_URL=mongodb://mongo:27017/clean-node-api
       - PORT=5050

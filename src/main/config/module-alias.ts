@@ -1,7 +1,4 @@
 import { addAlias } from 'module-alias';
 import { resolve } from 'path';
 
-addAlias(
-  '@',
-  resolve(process.env.TS_NODE_DEV === 'production' ? 'dist' : 'src'),
-);
+addAlias('@', resolve(process.env.NODE_ENV === 'production' ? 'dist' : 'src'));
