@@ -4,5 +4,5 @@ export { SurveyModel } from '@/domain/entities';
 export { SurveyResultModel } from '@/domain/entities';
 export {
   SaveSurveyResult,
-  SaveSurveyResultModel,
+  SaveSurveyResultParams,
 } from '@/domain/usecases/survey-result/save-survey-result';

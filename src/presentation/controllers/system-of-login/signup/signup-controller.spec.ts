@@ -2,12 +2,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   AddAccount,
-  AddAccountModel,
+  AddAccountParams,
   AccountModel,
   HttpRequest,
   Validation,
   Authentication,
-  AuthenticationModel,
+  AuthenticationParams,
 } from '@/presentation/controllers/system-of-login/signup/ports';
 import { SignUpController } from '@/presentation/controllers/system-of-login/signup';
 import {
@@ -31,7 +31,7 @@ const makeFakeAccount = (): AccountModel => ({
 
 const makeAddAccount = (): AddAccount => {
   class AddAccountStub implements AddAccount {
-    async add(account: AddAccountModel): Promise<AccountModel> {
+    async add(account: AddAccountParams): Promise<AccountModel> {
       return new Promise(resolve => resolve(makeFakeAccount()));
     }
   }
@@ -56,7 +56,7 @@ const makeFakeRequestAuthentication = (): HttpRequest => ({
 
 const makeAuthentication = (): Authentication => {
   class AuthenticationStub implements Authentication {
-    async auth(authentication: AuthenticationModel): Promise<string> {
+    async auth(authentication: AuthenticationParams): Promise<string> {
       return new Promise(resolve => resolve('any_token'));
     }
   }

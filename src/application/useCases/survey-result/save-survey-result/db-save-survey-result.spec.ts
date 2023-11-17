@@ -3,12 +3,12 @@ import { DbSaveSurveyResult } from '@/application/useCases/survey-result/save-su
 import {
   SaveSurveyResultRepository,
   SurveyResultModel,
-  SaveSurveyResultModel,
+  SaveSurveyResultParams,
 } from '@/application/useCases/survey-result/save-survey-result/ports';
 
 import MockDate from 'mockdate';
 
-const makeFakeSurveyResultData = (): SaveSurveyResultModel => ({
+const makeFakeSurveyResultData = (): SaveSurveyResultParams => ({
   surveyId: 'any_survey_id',
   accountId: 'any_account_id',
   answer: 'any_answer',
@@ -22,7 +22,7 @@ const makeFakeSurveyResult = (): SurveyResultModel =>
 
 const makeSaveSurveyResultRepository = (): SaveSurveyResultRepository => {
   class SaveSurveyResultRepositoryStub implements SaveSurveyResultRepository {
-    async save(surveyData: SaveSurveyResultModel): Promise<SurveyResultModel> {
+    async save(surveyData: SaveSurveyResultParams): Promise<SurveyResultModel> {
       return Promise.resolve(makeFakeSurveyResult());
     }
   }

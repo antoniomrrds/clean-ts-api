@@ -3,7 +3,7 @@
 import {
   Authentication,
   HttpRequest,
-  AuthenticationModel,
+  AuthenticationParams,
   Validation,
 } from '@/presentation/controllers/system-of-login/login/ports';
 import { LoginController } from '@/presentation/controllers/system-of-login/login';
@@ -17,7 +17,7 @@ import {
 
 const makeAuthentication = (): Authentication => {
   class AuthenticationStub implements Authentication {
-    async auth(authentication: AuthenticationModel): Promise<string> {
+    async auth(authentication: AuthenticationParams): Promise<string> {
       return new Promise(resolve => resolve('any_token'));
     }
   }

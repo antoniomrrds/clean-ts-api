@@ -1,8 +1,8 @@
 export * from '@/presentation/ports';
 export {
-  AddAccountModel,
+  AddAccountParams,
   AddAccount,
   Authentication,
-  AuthenticationModel,
+  AuthenticationParams,
 } from '@/domain/usecases/account';
 export { AccountModel } from '@/domain/entities';

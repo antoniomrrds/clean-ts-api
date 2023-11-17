@@ -4,7 +4,7 @@ import {
   Encrypter,
   UpdateAccessTokenRepository,
   LoadAccountByEmailRepository,
-  AuthenticationModel,
+  AuthenticationParams,
   Authentication,
 } from '@/application/useCases/account/authentication/ports';
 
@@ -16,7 +16,7 @@ export class DbAuthentication implements Authentication {
     private readonly updateAccessTokenRepository: UpdateAccessTokenRepository,
   ) {}
 
-  async auth(authentication: AuthenticationModel): Promise<string> {
+  async auth(authentication: AuthenticationParams): Promise<string> {
     const account = await this.loadAccountByEmailRepository.loadByEmail(
       authentication.email,
     );

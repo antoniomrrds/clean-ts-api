@@ -4,7 +4,7 @@
 import { AddSurveyController } from '@/presentation/controllers/survey/add-survey';
 import {
   AddSurvey,
-  AddSurveyModel,
+  AddSurveyParams,
   HttpRequest,
   Validation,
 } from '@/presentation/controllers/survey/add-survey/ports';
@@ -41,7 +41,7 @@ const makeValidation = () => {
 
 const makeAddSurvey = (): AddSurvey => {
   class AddSurveyStub implements AddSurvey {
-    async add(surveyData: AddSurveyModel): Promise<void> {
+    async add(surveyData: AddSurveyParams): Promise<void> {
       return new Promise(resolve => resolve());
     }
   }

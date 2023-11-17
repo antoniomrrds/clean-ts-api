@@ -6,12 +6,12 @@ import {
   UpdateAccessTokenRepository,
   LoadAccountByEmailRepository,
   AccountModel,
-  AuthenticationModel,
+  AuthenticationParams,
 } from '@/application/useCases/account/authentication/ports';
 
 import { DbAuthentication } from '@/application/useCases/account/authentication';
 
-const makeFakeAuthentication = (): AuthenticationModel => ({
+const makeFakeAuthentication = (): AuthenticationParams => ({
   email: 'any_email@mail.com',
   password: 'any_password',
 });

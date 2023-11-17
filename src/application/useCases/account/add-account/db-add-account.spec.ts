@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   AccountModel,
-  AddAccountModel,
+  AddAccountParams,
   AddAccountRepository,
   Hasher,
   LoadAccountByEmailRepository,
@@ -27,14 +27,14 @@ const makeFakeAccount = (): AccountModel => ({
 
 const makeAddAccountRepository = (): AddAccountRepository => {
   class AddAccountRepositoryStub implements AddAccountRepository {
-    async add(accountData: AddAccountModel): Promise<AccountModel> {
+    async add(accountData: AddAccountParams): Promise<AccountModel> {
       return new Promise(resolve => resolve(makeFakeAccount()));
     }
   }
   return new AddAccountRepositoryStub();
 };
 
-const makeFakeRequest = (): AddAccountModel => ({
+const makeFakeRequest = (): AddAccountParams => ({
   name: 'valid_name',
   email: 'valid_email@mail.com',
   password: 'valid_password',

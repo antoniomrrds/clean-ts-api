@@ -1,2 +1,2 @@
 export * from '@/presentation/ports';
-export { AddSurvey, AddSurveyModel } from '@/domain/usecases/survey';
+export { AddSurvey, AddSurveyParams } from '@/domain/usecases/survey';

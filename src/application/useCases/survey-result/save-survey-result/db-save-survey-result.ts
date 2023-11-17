@@ -1,6 +1,6 @@
 import {
   SurveyResultModel,
-  SaveSurveyResultModel,
+  SaveSurveyResultParams,
   SaveSurveyResultRepository,
   SaveSurveyResult,
 } from '@/application/useCases/survey-result/save-survey-result/ports';
@@ -10,7 +10,7 @@ export class DbSaveSurveyResult implements SaveSurveyResult {
     private readonly saveSurveyResultRepository: SaveSurveyResultRepository,
   ) {}
 
-  async save(surveyData: SaveSurveyResultModel): Promise<SurveyResultModel> {
+  async save(surveyData: SaveSurveyResultParams): Promise<SurveyResultModel> {
     const surveyResult = await this.saveSurveyResultRepository.save(surveyData);
     return surveyResult;
   }

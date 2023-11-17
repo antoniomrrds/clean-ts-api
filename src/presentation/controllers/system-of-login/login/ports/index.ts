@@ -1,2 +1,5 @@
 export * from '@/presentation/ports';
-export { Authentication, AuthenticationModel } from '@/domain/usecases/account';
+export {
+  Authentication,
+  AuthenticationParams,
+} from '@/domain/usecases/account';
