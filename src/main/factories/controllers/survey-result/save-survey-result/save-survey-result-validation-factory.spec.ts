@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { makeSaveSurveyResultValidation } from '@/main/factories/controllers/survey-result/save-survey-result';
 import {
   IdParamValidation,

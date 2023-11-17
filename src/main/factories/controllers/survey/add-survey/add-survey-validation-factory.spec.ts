@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { makeAddSurveyValidation } from '@/main/factories/controllers/survey/add-survey';
 import {
-  EmailValidation,
   RequiredFieldValidation,
   ValidationComposite,
 } from '@/validation/validators';

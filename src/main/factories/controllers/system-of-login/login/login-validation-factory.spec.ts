@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { makeLoginValidation } from '@/main/factories/controllers/system-of-login/login';
 import {
   EmailValidation,
@@ -6,16 +5,7 @@ import {
   ValidationComposite,
 } from '@/validation/validators';
 import { Validation } from '@/presentation/ports';
-import { EmailValidator } from '@/validation/ports';
-
-const makeEmailValidator = (): EmailValidator => {
-  class EmailValidatorStub implements EmailValidator {
-    isValid(email: string): boolean {
-      return true;
-    }
-  }
-  return new EmailValidatorStub();
-};
+import { mockEmailValidator } from '@/validation/test';
 
 jest.mock('@/validation/validators/validation-composite');
 
@@ -27,7 +17,7 @@ describe('LoginValidation Factory', () => {
       validations.push(new RequiredFieldValidation(field));
     }
 
-    validations.push(new EmailValidation('email', makeEmailValidator()));
+    validations.push(new EmailValidation('email', mockEmailValidator()));
     expect(ValidationComposite).toHaveBeenCalledWith(validations);
   });
 });

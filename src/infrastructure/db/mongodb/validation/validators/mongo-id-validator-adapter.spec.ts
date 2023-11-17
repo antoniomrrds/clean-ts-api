@@ -1,3 +1,4 @@
+import { throwError } from '@/domain/test';
 import { MongoHelper } from '@/infrastructure/db/mongodb/helpers';
 import { MongoIdValidatorAdapter } from '@/infrastructure/db/mongodb/validation/validators';
 
@@ -34,9 +35,9 @@ describe('MongoIdValidator Adapter', () => {
   });
   it('Should return false if MongoHelper.isValidObjectId throws an error', () => {
     const sut = makeSut();
-    jest.spyOn(MongoHelper, 'isValidObjectId').mockImplementationOnce(() => {
-      throw new Error();
-    });
+    jest
+      .spyOn(MongoHelper, 'isValidObjectId')
+      .mockImplementationOnce(throwError);
 
     const isValid = sut.isValidId('any_id');
 

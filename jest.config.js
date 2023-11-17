@@ -5,6 +5,7 @@ module.exports = {
     '!<rootDir>/src/main/**',
     '!**/ports/**',
     '!<rootDir>/src/**/index.ts',
+    '!**/test/**',
   ],
   coverageDirectory: 'coverage',
   testEnvironment: 'node',

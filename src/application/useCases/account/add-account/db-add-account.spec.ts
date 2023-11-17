@@ -1,56 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
+
 import {
   AccountModel,
-  AddAccountParams,
   AddAccountRepository,
   Hasher,
   LoadAccountByEmailRepository,
 } from '@/application/useCases/account/add-account/ports';
 import { DbAddAccount } from '@/application/useCases/account/add-account';
-
-const makeHasher = (): Hasher => {
-  class HasherStub implements Hasher {
-    async hash(value: string): Promise<string> {
-      return new Promise(resolve => resolve('hashed_password'));
-    }
-  }
-  return new HasherStub();
-};
-
-const makeFakeAccount = (): AccountModel => ({
-  id: 'valid_id',
-  name: 'valid_name',
-  email: 'valid_email@mail.com',
-  password: 'hashed_password',
-});
-
-const makeAddAccountRepository = (): AddAccountRepository => {
-  class AddAccountRepositoryStub implements AddAccountRepository {
-    async add(accountData: AddAccountParams): Promise<AccountModel> {
-      return new Promise(resolve => resolve(makeFakeAccount()));
-    }
-  }
-  return new AddAccountRepositoryStub();
-};
-
-const makeFakeRequest = (): AddAccountParams => ({
-  name: 'valid_name',
-  email: 'valid_email@mail.com',
-  password: 'valid_password',
-});
-
-const makeLoadAccountByEmailRepository = (): LoadAccountByEmailRepository => {
-  class LoadAccountByEmailRepositoryStub
-    implements LoadAccountByEmailRepository
-  {
-    async loadByEmail(email: string): Promise<AccountModel> {
-      const account: AccountModel = makeFakeAccount();
-      return new Promise(resolve => resolve(null as any));
-    }
-  }
-  return new LoadAccountByEmailRepositoryStub();
-};
+import {
+  mockAccountModel,
+  mockAddAccountParams,
+  throwError,
+} from '@/domain/test';
+import { mockAddAccountRepository, mockHasher } from '@/application/test';
 
 type SutTypes = {
   sut: DbAddAccount;
@@ -59,10 +22,23 @@ type SutTypes = {
   loadAccountByEmailRepositoryStub: LoadAccountByEmailRepository;
 };
 
+export const mockLoadAccountByEmailRepository =
+  (): LoadAccountByEmailRepository => {
+    class LoadAccountByEmailRepositoryStub
+      implements LoadAccountByEmailRepository
+    {
+      async loadByEmail(email: string): Promise<AccountModel> {
+        const account: AccountModel = mockAccountModel();
+        return Promise.resolve(null as any);
+      }
+    }
+    return new LoadAccountByEmailRepositoryStub();
+  };
+
 const makeSut = (): SutTypes => {
-  const hasherStub = makeHasher();
-  const addAccountRepositoryStub = makeAddAccountRepository();
-  const loadAccountByEmailRepositoryStub = makeLoadAccountByEmailRepository();
+  const hasherStub = mockHasher();
+  const addAccountRepositoryStub = mockAddAccountRepository();
+  const loadAccountByEmailRepositoryStub = mockLoadAccountByEmailRepository();
   const sut = new DbAddAccount(
     hasherStub,
     addAccountRepositoryStub,
@@ -80,19 +56,15 @@ describe('DbAddAccount Usecase', () => {
   it('Should call Hasher with correct password', async () => {
     const { sut, hasherStub } = makeSut();
     const hasherSpy = jest.spyOn(hasherStub, 'hash');
-    await sut.add(makeFakeRequest());
-    expect(hasherSpy).toHaveBeenCalledWith('valid_password');
+    await sut.add(mockAddAccountParams());
+    expect(hasherSpy).toHaveBeenCalledWith('any_password');
   });
 
   it('Should throw if Hasher throws', async () => {
     const { sut, hasherStub } = makeSut();
-    jest
-      .spyOn(hasherStub, 'hash')
-      .mockReturnValueOnce(
-        new Promise((resolve, reject) => reject(new Error())),
-      );
+    jest.spyOn(hasherStub, 'hash').mockImplementationOnce(throwError);
 
-    const promise = sut.add(makeFakeRequest());
+    const promise = sut.add(mockAddAccountParams());
     await expect(promise).rejects.toThrow();
   });
 
@@ -100,12 +72,11 @@ describe('DbAddAccount Usecase', () => {
     const { sut, addAccountRepositoryStub } = makeSut();
     const addSpy = jest.spyOn(addAccountRepositoryStub, 'add');
 
-    await sut.add(makeFakeRequest());
-    const { name, email, password } = makeFakeAccount();
+    await sut.add(mockAddAccountParams());
     expect(addSpy).toHaveBeenCalledWith({
-      name,
-      email,
-      password,
+      name: 'any_name',
+      email: 'any_email@mail.com',
+      password: 'hashed_password',
     });
   });
 
@@ -113,31 +84,29 @@ describe('DbAddAccount Usecase', () => {
     const { sut, addAccountRepositoryStub } = makeSut();
     jest
       .spyOn(addAccountRepositoryStub, 'add')
-      .mockReturnValueOnce(
-        new Promise((resolve, reject) => reject(new Error())),
-      );
+      .mockImplementationOnce(throwError);
 
-    const promise = sut.add(makeFakeRequest());
+    const promise = sut.add(mockAddAccountParams());
     await expect(promise).rejects.toThrow();
   });
 
   it('Should return an account on success', async () => {
     const { sut } = makeSut();
-    const account = await sut.add(makeFakeRequest());
-    expect(account).toEqual(makeFakeAccount());
+    const account = await sut.add(mockAddAccountParams());
+    expect(account).toEqual(mockAccountModel());
   });
   it('Should call loadAccountByEmailRepository with correct email', async () => {
     const { sut, loadAccountByEmailRepositoryStub } = makeSut();
     const loadSpy = jest.spyOn(loadAccountByEmailRepositoryStub, 'loadByEmail');
-    await sut.add(makeFakeRequest());
-    expect(loadSpy).toHaveBeenCalledWith('valid_email@mail.com');
+    await sut.add(mockAddAccountParams());
+    expect(loadSpy).toHaveBeenCalledWith('any_email@mail.com');
   });
   it('Should return null if loadAccountByEmailRepository returns null', async () => {
     const { sut, loadAccountByEmailRepositoryStub } = makeSut();
     jest
       .spyOn(loadAccountByEmailRepositoryStub, 'loadByEmail')
-      .mockReturnValueOnce(new Promise(resolve => resolve(makeFakeAccount())));
-    const account = await sut.add(makeFakeRequest());
+      .mockReturnValueOnce(Promise.resolve(mockAccountModel()));
+    const account = await sut.add(mockAddAccountParams());
     expect(account).toBeNull();
   });
 });

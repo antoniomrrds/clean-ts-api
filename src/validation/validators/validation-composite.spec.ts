@@ -1,18 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { MissingParamError } from '@/presentation/errors';
 import { ValidationComposite } from '@/validation/validators';
 import { Validation } from '@/presentation/ports';
-
-const makeValidation = (): Validation => {
-  class ValidationStub implements Validation {
-    validate(input: any): Error {
-      return null as any;
-    }
-  }
-
-  return new ValidationStub();
-};
+import { mockValidation } from '@/validation/test';
 
 type SutTypes = {
   sut: ValidationComposite;
@@ -20,7 +9,7 @@ type SutTypes = {
 };
 
 const makesut = (): SutTypes => {
-  const validationStubs = [makeValidation(), makeValidation()];
+  const validationStubs = [mockValidation(), mockValidation()];
   const sut = new ValidationComposite(validationStubs);
   return {
     sut,
