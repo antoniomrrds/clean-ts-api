@@ -1,8 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 import {
-  AccountModel,
   AddAccountRepository,
   Hasher,
   LoadAccountByEmailRepository,
@@ -13,7 +10,11 @@ import {
   mockAddAccountParams,
   throwError,
 } from '@/domain/test';
-import { mockAddAccountRepository, mockHasher } from '@/application/test';
+import {
+  mockAddAccountRepository,
+  mockHasher,
+  mockLoadAccountByEmailRepository,
+} from '@/application/test';
 
 type SutTypes = {
   sut: DbAddAccount;
@@ -22,23 +23,13 @@ type SutTypes = {
   loadAccountByEmailRepositoryStub: LoadAccountByEmailRepository;
 };
 
-export const mockLoadAccountByEmailRepository =
-  (): LoadAccountByEmailRepository => {
-    class LoadAccountByEmailRepositoryStub
-      implements LoadAccountByEmailRepository
-    {
-      async loadByEmail(email: string): Promise<AccountModel> {
-        const account: AccountModel = mockAccountModel();
-        return Promise.resolve(null as any);
-      }
-    }
-    return new LoadAccountByEmailRepositoryStub();
-  };
-
 const makeSut = (): SutTypes => {
   const hasherStub = mockHasher();
   const addAccountRepositoryStub = mockAddAccountRepository();
   const loadAccountByEmailRepositoryStub = mockLoadAccountByEmailRepository();
+  jest
+    .spyOn(loadAccountByEmailRepositoryStub, 'loadByEmail')
+    .mockReturnValue(Promise.resolve(null));
   const sut = new DbAddAccount(
     hasherStub,
     addAccountRepositoryStub,
