@@ -8,6 +8,7 @@ import {
   surveysSchema,
   apikeyAuthSchema,
   signUpParamsSchema,
+  addSurveyParamsSchema,
 } from '@/main/docs/schemas';
 import {
   badRequest,
@@ -49,8 +50,9 @@ export default {
   },
   schemas: {
     account: accountSchema,
-    loginParams: loginParamsSchema,
     error: errorSchema,
+    loginParams: loginParamsSchema,
+    addSurveyParams: addSurveyParamsSchema,
     survey: surveySchema,
     surveyAnswer: surveyAnswerSchema,
     surveys: surveysSchema,
