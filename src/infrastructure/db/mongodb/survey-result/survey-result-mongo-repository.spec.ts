@@ -70,8 +70,32 @@ describe('SurveyResultMongoRepository', () => {
         date: new Date(),
       });
       expect(surveyResult).toBeTruthy();
-      expect(surveyResult.id).toBeTruthy();
-      expect(surveyResult.answer).toBe(survey.answers[0].answer);
+      expect(surveyResult.surveyId.toString()).toEqual(survey.id.toString());
+      expect(surveyResult.answers[0].answer).toBe(survey.answers[0].answer);
+      expect(surveyResult.answers[0].count).toBe(1);
+      expect(surveyResult.answers[0].percent).toBe(100);
+    });
+    it('Should update survey result if its not new', async () => {
+      const sut = makeSut();
+      const survey = await makeFakeSurvey();
+      const account = await makeFakeAccount();
+      await surveyResultCollection.insertOne({
+        surveyId: MongoHelper.objectId(survey.id),
+        accountId: MongoHelper.objectId(account.id),
+        answer: survey.answers[0].answer,
+        date: new Date(),
+      });
+      const surveyResult = await sut.save({
+        surveyId: survey.id,
+        accountId: account.id,
+        answer: survey.answers[0].answer,
+        date: new Date(),
+      });
+      expect(surveyResult).toBeTruthy();
+      expect(surveyResult.surveyId.toString()).toEqual(survey.id.toString());
+      expect(surveyResult.answers[0].answer).toBe(survey.answers[0].answer);
+      expect(surveyResult.answers[0].count).toBe(1);
+      expect(surveyResult.answers[0].percent).toBe(100);
     });
   });
 });

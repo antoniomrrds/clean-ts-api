@@ -35,15 +35,15 @@ describe('DbSaveSurveyResult Usecase', () => {
     it('Should call SaveSurveyResultRepository with correct values', async () => {
       const { sut, saveSurveyResultRepositoryStub } = makeSut();
       const saveSpy = jest.spyOn(saveSurveyResultRepositoryStub, 'save');
-      await sut.save(mockSaveSurveyResultModel());
-      expect(saveSpy).toHaveBeenCalledWith(mockSaveSurveyResultModel());
+      await sut.save(mockSaveSurveyResultParams());
+      expect(saveSpy).toHaveBeenCalledWith(mockSaveSurveyResultParams());
     });
     it('Should throw if SaveSurveyResultRepository throws', async () => {
       const { sut, saveSurveyResultRepositoryStub } = makeSut();
       jest
         .spyOn(saveSurveyResultRepositoryStub, 'save')
         .mockImplementationOnce(throwError);
-      const promise = sut.save(mockSaveSurveyResultModel());
+      const promise = sut.save(mockSaveSurveyResultParams());
       await expect(promise).rejects.toThrow();
     });
 
