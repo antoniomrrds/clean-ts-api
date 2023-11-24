@@ -1,19 +1,24 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { mockLoadSurveyResultRepository } from '@/application/test';
 import { DbLoadSurveyResult } from '@/application/useCases/survey-result/load-survey-result';
-import {
-  SurveyResultModel,
-  LoadSurveyResultRepository,
-} from '@/application/useCases/survey-result/load-survey-result/ports';
-import { mockSaveSurveyResultModel } from '@/domain/test';
+import { LoadSurveyResultRepository } from '@/application/useCases/survey-result/load-survey-result/ports';
+
+type SutTypes = {
+  sut: DbLoadSurveyResult;
+  loadSurveyResultRepositoryStub: LoadSurveyResultRepository;
+};
+
+const makeSut = (): SutTypes => {
+  const loadSurveyResultRepositoryStub = mockLoadSurveyResultRepository();
+  const sut = new DbLoadSurveyResult(loadSurveyResultRepositoryStub);
+  return {
+    sut,
+    loadSurveyResultRepositoryStub,
+  };
+};
 describe('DbLoadSurveyResult Usecase', () => {
   it('Should call LoadSurveyResultRepository with correct values', async () => {
-    class LoadSurveyResultRepositoryStub implements LoadSurveyResultRepository {
-      async loadBySurveyId(surveyId: string): Promise<SurveyResultModel> {
-        return Promise.resolve(mockSaveSurveyResultModel());
-      }
-    }
-    const loadSurveyResultRepositoryStub = new LoadSurveyResultRepositoryStub();
-    const sut = new DbLoadSurveyResult(loadSurveyResultRepositoryStub);
+    const { sut, loadSurveyResultRepositoryStub } = makeSut();
     const loadBySurveyIdSpy = jest.spyOn(
       loadSurveyResultRepositoryStub,
       'loadBySurveyId',
