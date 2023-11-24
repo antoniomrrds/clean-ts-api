@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { mockLoadSurveyResultRepository } from '@/application/test';
-import { DbLoadSurveyResult } from '@/application/useCases/survey-result/load-survey-result';
 import { LoadSurveyResultRepository } from '@/application/useCases/survey-result/load-survey-result/ports';
-import { throwError } from '@/domain/test';
+import { DbLoadSurveyResult } from '@/application/useCases/survey-result/load-survey-result';
+import { mockSaveSurveyResultModel, throwError } from '@/domain/test';
 
 type SutTypes = {
   sut: DbLoadSurveyResult;
@@ -34,5 +34,10 @@ describe('DbLoadSurveyResult Usecase', () => {
       .mockImplementationOnce(throwError);
     const promise = sut.load('any_survey_id');
     await expect(promise).rejects.toThrow();
+  });
+  it('Should return a SurveyResult on success', async () => {
+    const { sut } = makeSut();
+    const surveyResult = await sut.load('any_survey_id');
+    expect(surveyResult).toEqual(mockSaveSurveyResultModel());
   });
 });
