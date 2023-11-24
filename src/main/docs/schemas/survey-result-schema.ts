@@ -10,11 +10,12 @@ export const surveyResultSchema = {
     answers: {
       type: 'array',
       items: {
-        $ref: '#/schemas/surveyAnswer',
+        $ref: '#/schemas/surveyResultAnswer',
       },
     },
     date: {
       type: 'string',
     },
   },
+  required: ['surveyId', 'question', 'answers', 'date'],
 };

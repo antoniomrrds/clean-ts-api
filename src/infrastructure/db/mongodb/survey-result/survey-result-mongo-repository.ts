@@ -86,9 +86,14 @@ export class SurveyResultMongoRepository implements SaveSurveyResultRepository {
         '_id.answer.percent': {
           $multiply: [
             {
-              $divide: ['$count', '$_id.total'],
+              $cond: [
+                {
+                  $and: [{ $isNumber: '$count' }, { $isNumber: '$_id.total' }],
+                },
+                { $multiply: [{ $divide: ['$count', '$_id.total'] }, 100] },
+                0,
+              ],
             },
-            100,
           ],
         },
       })
@@ -116,7 +121,7 @@ export class SurveyResultMongoRepository implements SaveSurveyResultRepository {
     const surveyResult = await surveyResultCollection
       .aggregate(query)
       .toArray();
-
+    console.log(surveyResult[0]);
     return surveyResult?.length ? (surveyResult[0] as SurveyResultModel) : null;
   }
 }
