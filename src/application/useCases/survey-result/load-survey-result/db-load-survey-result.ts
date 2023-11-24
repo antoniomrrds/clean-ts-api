@@ -10,8 +10,9 @@ export class DbLoadSurveyResult implements LoadSurveyResult {
   ) {}
 
   async load(surveyId: string): Promise<SurveyResultModel> {
-    await this.loadSurveyResultRepository.loadBySurveyId(surveyId);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return null as any;
+    const surveyResult =
+      await this.loadSurveyResultRepository.loadBySurveyId(surveyId);
+
+    return surveyResult;
   }
 }
