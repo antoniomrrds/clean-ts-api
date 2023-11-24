@@ -16,8 +16,9 @@ const makeFakeSurvey = async (): Promise<SurveyModel> => {
   const insertSurvey = await surveyCollection.insertOne({
     question: 'any_question',
     answers: [
-      { image: 'any_image', answer: 'any_answer' },
-      { answer: 'other_answer' },
+      { image: 'any_image', answer: 'any_answer_1' },
+      { answer: 'any_answer_2' },
+      { answer: 'any_answer_3' },
     ],
     date: new Date(),
   });
@@ -103,6 +104,48 @@ describe('SurveyResultMongoRepository', () => {
       expect(surveyResult.answers[0].percent).toBe(100);
       expect(surveyResult.answers[1].count).toBe(0);
       expect(surveyResult.answers[1].percent).toBe(0);
+    });
+  });
+  describe('loadBySurveyId()', () => {
+    it('Should load survey result', async () => {
+      const sut = makeSut();
+      const survey = await makeFakeSurvey();
+      const account = await makeFakeAccount();
+      await surveyResultCollection.insertMany([
+        {
+          surveyId: MongoHelper.objectId(survey.id),
+          accountId: MongoHelper.objectId(account.id),
+          answer: survey.answers[0].answer,
+          date: new Date(),
+        },
+        {
+          surveyId: MongoHelper.objectId(survey.id),
+          accountId: MongoHelper.objectId(account.id),
+          answer: survey.answers[0].answer,
+          date: new Date(),
+        },
+        {
+          surveyId: MongoHelper.objectId(survey.id),
+          accountId: MongoHelper.objectId(account.id),
+          answer: survey.answers[1].answer,
+          date: new Date(),
+        },
+        {
+          surveyId: MongoHelper.objectId(survey.id),
+          accountId: MongoHelper.objectId(account.id),
+          answer: survey.answers[1].answer,
+          date: new Date(),
+        },
+      ]);
+      const surveyResult = await sut.loadBySurveyId(survey.id);
+      expect(surveyResult).toBeTruthy();
+      expect(surveyResult?.surveyId.toString()).toEqual(survey.id.toString());
+      expect(surveyResult?.answers[0].count).toBe(2);
+      expect(surveyResult?.answers[0].percent).toBe(50);
+      expect(surveyResult?.answers[1].count).toBe(2);
+      expect(surveyResult?.answers[1].percent).toBe(50);
+      expect(surveyResult?.answers[2].count).toBe(0);
+      expect(surveyResult?.answers[2].percent).toBe(0);
     });
   });
 });
