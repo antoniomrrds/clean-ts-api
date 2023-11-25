@@ -5,8 +5,11 @@ export const mockSurveyParams = (): AddSurveyParams => ({
   question: 'any_question',
   answers: [
     {
-      image: 'any_image',
       answer: 'any_answer',
+    },
+    {
+      answer: 'other_answer',
+      image: 'other_image',
     },
   ],
   date: new Date(),
