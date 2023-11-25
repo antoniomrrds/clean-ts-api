@@ -64,22 +64,21 @@ describe('SurveyResultMongoRepository', () => {
   });
   describe('save()', () => {
     it('Should add a survey result if its new', async () => {
-      const sut = makeSut();
       const survey = await makeFakeSurvey();
       const account = await makeFakeAccount();
-      const surveyResult = await sut.save({
+      const sut = makeSut();
+      await sut.save({
         surveyId: survey.id,
         accountId: account.id,
         answer: survey.answers[0].answer,
         date: new Date(),
       });
+
+      const surveyResult = await surveyResultCollection.findOne({
+        surveyId: MongoHelper.objectId(survey.id),
+        accountId: MongoHelper.objectId(account.id),
+      });
       expect(surveyResult).toBeTruthy();
-      expect(surveyResult.surveyId.toString()).toEqual(survey.id.toString());
-      expect(surveyResult.answers[0].answer).toBe(survey.answers[0].answer);
-      expect(surveyResult.answers[0].count).toBe(1);
-      expect(surveyResult.answers[0].percent).toBe(100);
-      expect(surveyResult.answers[1].count).toBe(0);
-      expect(surveyResult.answers[1].percent).toBe(0);
     });
     it('Should update survey result if its not new', async () => {
       const sut = makeSut();
@@ -91,19 +90,22 @@ describe('SurveyResultMongoRepository', () => {
         answer: survey.answers[0].answer,
         date: new Date(),
       });
-      const surveyResult = await sut.save({
+
+      await sut.save({
         surveyId: survey.id,
         accountId: account.id,
-        answer: survey.answers[0].answer,
+        answer: survey.answers[1].answer,
         date: new Date(),
       });
+
+      const surveyResult = await surveyResultCollection
+        .find({
+          surveyId: MongoHelper.objectId(survey.id),
+          accountId: MongoHelper.objectId(account.id),
+        })
+        .toArray();
       expect(surveyResult).toBeTruthy();
-      expect(surveyResult.surveyId.toString()).toEqual(survey.id.toString());
-      expect(surveyResult.answers[0].answer).toBe(survey.answers[0].answer);
-      expect(surveyResult.answers[0].count).toBe(1);
-      expect(surveyResult.answers[0].percent).toBe(100);
-      expect(surveyResult.answers[1].count).toBe(0);
-      expect(surveyResult.answers[1].percent).toBe(0);
+      expect(surveyResult.length).toBe(1);
     });
   });
   describe('loadBySurveyId()', () => {
