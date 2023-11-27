@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { throwError } from '@/domain/test';
 import { LoadSurveyResultController } from '@/presentation/controllers/survey-result/load-survey-result';
 import {
   HttpRequest,
@@ -7,9 +6,14 @@ import {
   Validation,
 } from '@/presentation/controllers/survey-result/load-survey-result/ports';
 import { InvalidParamError } from '@/presentation/errors';
-import { forbidden, serverError } from '@/presentation/helpers/http';
+import {
+  badRequest,
+  forbidden,
+  serverError,
+} from '@/presentation/helpers/http';
 import { mockLoadSurveyByIdStub } from '@/presentation/test';
 import { mockValidation } from '@/validation/test';
+import { throwError } from '@/domain/test';
 
 const mockFakeRequest = (): HttpRequest => ({
   params: {
@@ -49,6 +53,23 @@ describe('LoadSurveyResult Controller', () => {
 
     expect(validateSpy).toHaveBeenCalledWith(httpRequest.params.surveyId);
   });
+
+  it('Should return 400 if Validation returns an error', async () => {
+    const { sut, validationStub } = makeSut();
+
+    jest
+      .spyOn(validationStub, 'validate')
+      .mockReturnValueOnce(new InvalidParamError('any_field'));
+
+    const httpRequest = mockFakeRequest();
+
+    const httpResponse = await sut.handle(httpRequest);
+
+    expect(httpResponse).toEqual(
+      badRequest(new InvalidParamError('any_field')),
+    );
+  });
+
   it('should call LoadSurveyById with correct id', () => {
     const { sut, loadSurveyByIdStub } = makeSut();
     const loadSpy = jest.spyOn(loadSurveyByIdStub, 'loadById');
