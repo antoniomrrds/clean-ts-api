@@ -4,7 +4,7 @@ import {
   SaveSurveyResultRepository,
 } from '@/application/ports/db/survey-result';
 import { SurveyResultModel } from '@/domain/entities';
-import { mockSaveSurveyResultModel } from '@/domain/test';
+import { mockSurveyResultModel } from '@/domain/test';
 import { SaveSurveyResultParams } from '@/domain/usecases/survey-result';
 
 export const mockSaveSurveyResultRepository =
@@ -22,7 +22,7 @@ export const mockLoadSurveyResultRepository =
       async loadBySurveyId(
         surveyId: string,
       ): Promise<SurveyResultModel | null> {
-        return Promise.resolve(mockSaveSurveyResultModel());
+        return Promise.resolve(mockSurveyResultModel());
       }
     }
     return new LoadSurveyResultRepositoryStub();

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { mockSaveSurveyResultModel, throwError } from '@/domain/test';
+import { mockSurveyResultModel, throwError } from '@/domain/test';
 import { SaveSurveyResultController } from '@/presentation/controllers/survey-result/save-survey-result';
 import {
   HttpRequest,
@@ -150,6 +150,6 @@ describe('SaveSurveyResult Controller', () => {
   it('Should return 200 on success', async () => {
     const { sut } = makeSut();
     const httpResponse = await sut.handle(mockFakeRequest());
-    expect(httpResponse).toEqual(ok(mockSaveSurveyResultModel()));
+    expect(httpResponse).toEqual(ok(mockSurveyResultModel()));
   });
 });

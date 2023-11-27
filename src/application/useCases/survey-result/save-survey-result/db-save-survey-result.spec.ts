@@ -4,7 +4,7 @@ import {
   SaveSurveyResultRepository,
 } from '@/application/useCases/survey-result/save-survey-result/ports';
 import {
-  mockSaveSurveyResultModel,
+  mockSurveyResultModel,
   mockSaveSurveyResultParams,
   throwError,
 } from '@/domain/test';
@@ -81,7 +81,7 @@ describe('DbSaveSurveyResult Usecase', () => {
     it('Should return a SurveyResult on success', async () => {
       const { sut } = makeSut();
       const surveyResult = await sut.save(mockSaveSurveyResultParams());
-      expect(surveyResult).toEqual(mockSaveSurveyResultModel());
+      expect(surveyResult).toEqual(mockSurveyResultModel());
     });
   });
 });

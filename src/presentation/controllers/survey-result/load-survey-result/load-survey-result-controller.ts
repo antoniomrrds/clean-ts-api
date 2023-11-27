@@ -10,6 +10,7 @@ import { InvalidParamError } from '@/presentation/errors';
 import {
   badRequest,
   forbidden,
+  ok,
   serverError,
 } from '@/presentation/helpers/http';
 
@@ -32,10 +33,9 @@ export class LoadSurveyResultController implements Controller {
       if (!survey) {
         return forbidden(new InvalidParamError('surveyId'));
       }
-      await this.loadSurveyResult.load(surveyId);
+      const surveyResult = await this.loadSurveyResult.load(surveyId);
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      return null as any;
+      return ok(surveyResult);
     } catch (error) {
       return serverError(error);
     }

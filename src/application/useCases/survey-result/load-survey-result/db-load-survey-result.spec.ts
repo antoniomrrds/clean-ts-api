@@ -8,7 +8,7 @@ import {
 } from '@/application/useCases/survey-result/load-survey-result/ports';
 import { DbLoadSurveyResult } from '@/application/useCases/survey-result/load-survey-result';
 import {
-  mockSaveSurveyResultModel,
+  mockSurveyResultModel,
   mockSurveyResultEmpty,
   throwError,
 } from '@/domain/test';
@@ -82,6 +82,6 @@ describe('DbLoadSurveyResult Usecase', () => {
   it('Should return a SurveyResult on success', async () => {
     const { sut } = makeSut();
     const surveyResult = await sut.load('any_survey_id');
-    expect(surveyResult).toEqual(mockSaveSurveyResultModel());
+    expect(surveyResult).toEqual(mockSurveyResultModel());
   });
 });
