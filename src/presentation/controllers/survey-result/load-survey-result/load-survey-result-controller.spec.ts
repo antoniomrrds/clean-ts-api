@@ -10,6 +10,7 @@ import { InvalidParamError } from '@/presentation/errors';
 import {
   badRequest,
   forbidden,
+  ok,
   serverError,
 } from '@/presentation/helpers/http';
 import {
@@ -17,7 +18,9 @@ import {
   mockLoadSurveyResultStub,
 } from '@/presentation/test';
 import { mockValidation } from '@/validation/test';
-import { throwError } from '@/domain/test';
+import { mockSurveyResultModel, throwError } from '@/domain/test';
+
+import MockDate from 'mockdate';
 
 const mockFakeRequest = (): HttpRequest => ({
   params: {
@@ -50,6 +53,13 @@ const makeSut = (): SutTypes => {
   };
 };
 describe('LoadSurveyResult Controller', () => {
+  beforeAll(() => {
+    MockDate.set(new Date());
+  });
+
+  afterAll(() => {
+    MockDate.reset();
+  });
   it('Should call Validation with correct values', async () => {
     const { sut, validationStub } = makeSut();
 
@@ -114,5 +124,10 @@ describe('LoadSurveyResult Controller', () => {
     jest.spyOn(loadSurveyResultStub, 'load').mockImplementationOnce(throwError);
     const httpResponse = await sut.handle(mockFakeRequest());
     expect(httpResponse).toEqual(serverError(new Error()));
+  });
+  it('Should return 200 on success', async () => {
+    const { sut } = makeSut();
+    const httpResponse = await sut.handle(mockFakeRequest());
+    expect(httpResponse).toEqual(ok(mockSurveyResultModel()));
   });
 });
