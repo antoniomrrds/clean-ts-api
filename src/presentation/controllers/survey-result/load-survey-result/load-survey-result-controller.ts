@@ -3,6 +3,7 @@ import {
   HttpRequest,
   HttpResponse,
   LoadSurveyById,
+  LoadSurveyResult,
   Validation,
 } from '@/presentation/controllers/survey-result/load-survey-result/ports';
 import { InvalidParamError } from '@/presentation/errors';
@@ -16,6 +17,7 @@ export class LoadSurveyResultController implements Controller {
   constructor(
     private readonly loadSurveyById: LoadSurveyById,
     private readonly validation: Validation,
+    private readonly loadSurveyResult: LoadSurveyResult,
   ) {}
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
@@ -30,6 +32,7 @@ export class LoadSurveyResultController implements Controller {
       if (!survey) {
         return forbidden(new InvalidParamError('surveyId'));
       }
+      await this.loadSurveyResult.load(surveyId);
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       return null as any;
