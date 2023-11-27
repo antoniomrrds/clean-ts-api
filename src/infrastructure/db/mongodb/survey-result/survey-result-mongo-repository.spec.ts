@@ -12,7 +12,7 @@ const makeSut = (): SurveyResultMongoRepository => {
   return new SurveyResultMongoRepository();
 };
 
-const makeFakeSurvey = async (): Promise<SurveyModel> => {
+const mockSurvey = async (): Promise<SurveyModel> => {
   const insertSurvey = await surveyCollection.insertOne({
     question: 'any_question',
     answers: [
@@ -26,7 +26,7 @@ const makeFakeSurvey = async (): Promise<SurveyModel> => {
   return MongoHelper.map(res);
 };
 
-const makeFakeAccount = async (): Promise<AccountModel> => {
+const mockAccount = async (): Promise<AccountModel> => {
   const insertAccount = await accountCollection.insertOne({
     name: 'any_name',
     email: 'any_email@mail.com',
@@ -64,8 +64,8 @@ describe('SurveyResultMongoRepository', () => {
   });
   describe('save()', () => {
     it('Should add a survey result if its new', async () => {
-      const survey = await makeFakeSurvey();
-      const account = await makeFakeAccount();
+      const survey = await mockSurvey();
+      const account = await mockAccount();
       const sut = makeSut();
       await sut.save({
         surveyId: survey.id,
@@ -82,8 +82,8 @@ describe('SurveyResultMongoRepository', () => {
     });
     it('Should update survey result if its not new', async () => {
       const sut = makeSut();
-      const survey = await makeFakeSurvey();
-      const account = await makeFakeAccount();
+      const survey = await mockSurvey();
+      const account = await mockAccount();
       await surveyResultCollection.insertOne({
         surveyId: MongoHelper.objectId(survey.id),
         accountId: MongoHelper.objectId(account.id),
@@ -111,8 +111,8 @@ describe('SurveyResultMongoRepository', () => {
   describe('loadBySurveyId()', () => {
     it('Should load survey result', async () => {
       const sut = makeSut();
-      const survey = await makeFakeSurvey();
-      const account = await makeFakeAccount();
+      const survey = await mockSurvey();
+      const account = await mockAccount();
       await surveyResultCollection.insertMany([
         {
           surveyId: MongoHelper.objectId(survey.id),
