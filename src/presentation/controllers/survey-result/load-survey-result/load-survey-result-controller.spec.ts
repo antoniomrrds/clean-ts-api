@@ -3,6 +3,7 @@ import { LoadSurveyResultController } from '@/presentation/controllers/survey-re
 import {
   HttpRequest,
   LoadSurveyById,
+  LoadSurveyResult,
   Validation,
 } from '@/presentation/controllers/survey-result/load-survey-result/ports';
 import { InvalidParamError } from '@/presentation/errors';
@@ -11,7 +12,10 @@ import {
   forbidden,
   serverError,
 } from '@/presentation/helpers/http';
-import { mockLoadSurveyByIdStub } from '@/presentation/test';
+import {
+  mockLoadSurveyByIdStub,
+  mockLoadSurveyResultStub,
+} from '@/presentation/test';
 import { mockValidation } from '@/validation/test';
 import { throwError } from '@/domain/test';
 
@@ -25,20 +29,24 @@ type SutTypes = {
   sut: LoadSurveyResultController;
   loadSurveyByIdStub: LoadSurveyById;
   validationStub: Validation;
+  loadSurveyResultStub: LoadSurveyResult;
 };
 
 const makeSut = (): SutTypes => {
+  const loadSurveyResultStub = mockLoadSurveyResultStub();
   const loadSurveyByIdStub = mockLoadSurveyByIdStub();
   const validationStub = mockValidation();
 
   const sut = new LoadSurveyResultController(
     loadSurveyByIdStub,
     validationStub,
+    loadSurveyResultStub,
   );
   return {
     sut,
     loadSurveyByIdStub,
     validationStub,
+    loadSurveyResultStub,
   };
 };
 describe('LoadSurveyResult Controller', () => {
@@ -70,11 +78,12 @@ describe('LoadSurveyResult Controller', () => {
     );
   });
 
-  it('should call LoadSurveyById with correct id', () => {
+  it('should call LoadSurveyById with correct id', async () => {
     const { sut, loadSurveyByIdStub } = makeSut();
     const loadSpy = jest.spyOn(loadSurveyByIdStub, 'loadById');
-    sut.handle(mockFakeRequest());
-    expect(loadSpy).toHaveBeenCalledWith('any_id');
+    const httpRequest = mockFakeRequest();
+    await sut.handle(httpRequest);
+    expect(loadSpy).toHaveBeenCalledWith(httpRequest.params.surveyId);
   });
   it('should return 403 if LoadSurveyById returns null', async () => {
     const { sut, loadSurveyByIdStub } = makeSut();
@@ -91,5 +100,13 @@ describe('LoadSurveyResult Controller', () => {
       .mockImplementationOnce(throwError);
     const httpResponse = await sut.handle(mockFakeRequest());
     expect(httpResponse).toEqual(serverError(new Error()));
+  });
+  it('Should call LoadSurveyResult with correct values', async () => {
+    const { sut, loadSurveyResultStub } = makeSut();
+    const loadSpy = jest.spyOn(loadSurveyResultStub, 'load');
+    const httpRequest = mockFakeRequest();
+
+    await sut.handle(httpRequest);
+    expect(loadSpy).toHaveBeenCalledWith(httpRequest.params.surveyId);
   });
 });
