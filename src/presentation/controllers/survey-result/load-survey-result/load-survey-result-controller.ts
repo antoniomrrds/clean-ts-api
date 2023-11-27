@@ -6,7 +6,11 @@ import {
   Validation,
 } from '@/presentation/controllers/survey-result/load-survey-result/ports';
 import { InvalidParamError } from '@/presentation/errors';
-import { forbidden, serverError } from '@/presentation/helpers/http';
+import {
+  badRequest,
+  forbidden,
+  serverError,
+} from '@/presentation/helpers/http';
 
 export class LoadSurveyResultController implements Controller {
   constructor(
@@ -17,7 +21,11 @@ export class LoadSurveyResultController implements Controller {
     try {
       const { surveyId } = httpRequest.params;
 
-      this.validation.validate(surveyId);
+      const error = this.validation.validate(surveyId);
+      if (error) {
+        return badRequest(error);
+      }
+
       const survey = await this.loadSurveyById.loadById(surveyId);
       if (!survey) {
         return forbidden(new InvalidParamError('surveyId'));
