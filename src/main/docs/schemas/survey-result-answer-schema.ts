@@ -13,6 +13,6 @@ export const surveyResultAnswerSchema = {
     percent: {
       type: 'number',
     },
-    required: ['answer', 'count', 'percent'],
   },
+  required: ['answer', 'count', 'percent'],
 };
