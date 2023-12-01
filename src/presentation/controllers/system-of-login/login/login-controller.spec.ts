@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Authentication,
   HttpRequest,
@@ -11,7 +12,7 @@ import {
   serverError,
   unauthorized,
 } from '@/presentation/helpers/http';
-import { throwError } from '@/domain/test';
+import { mockAuthenticationModel, throwError } from '@/domain/test';
 import { mockValidation } from '@/validation/test';
 import { mockAuthentication } from '@/presentation/test';
 
@@ -53,7 +54,7 @@ describe('Login Controller', () => {
     const { sut, authenticationStub } = makeSut();
     jest
       .spyOn(authenticationStub, 'auth')
-      .mockReturnValueOnce(Promise.resolve(null as unknown as string));
+      .mockReturnValueOnce(Promise.resolve(null as any));
     const httpRequest = mockRequest();
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse).toEqual(unauthorized());
@@ -71,7 +72,7 @@ describe('Login Controller', () => {
     const { sut } = makeSut();
     const httpRequest = mockRequest();
     const httpResponse = await sut.handle(httpRequest);
-    expect(httpResponse).toEqual(ok({ accessToken: 'any_token' }));
+    expect(httpResponse).toEqual(ok(mockAuthenticationModel()));
   });
 
   it('Should call Validation with correct value', async () => {

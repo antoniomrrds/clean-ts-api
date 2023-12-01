@@ -17,7 +17,11 @@ import {
   forbidden,
   serverError,
 } from '@/presentation/helpers/http';
-import { throwError } from '@/domain/test';
+import {
+  mockAddAccountParams,
+  mockAuthenticationModel,
+  throwError,
+} from '@/domain/test';
 import { mockValidation } from '@/validation/test';
 import { mockAddAccount, mockAuthentication } from '@/presentation/test';
 
@@ -67,11 +71,7 @@ describe('Signup Controller', () => {
     const addSpy = jest.spyOn(addAccountStub, 'add');
     const httpRequest = mockRequest();
     await sut.handle(httpRequest);
-    expect(addSpy).toHaveBeenCalledWith({
-      name: 'any_name',
-      email: 'any_email@mail.com',
-      password: 'any_password',
-    });
+    expect(addSpy).toHaveBeenCalledWith(mockAddAccountParams());
   });
 
   it('Should return 403 if AddAccount returns null', async () => {
@@ -99,7 +99,7 @@ describe('Signup Controller', () => {
     const { sut } = makeSut();
     const httpRequest = mockRequest();
     const httpResponse = await sut.handle(httpRequest);
-    expect(httpResponse).toEqual(created({ accessToken: 'any_token' }));
+    expect(httpResponse).toEqual(created(mockAuthenticationModel()));
   });
   it('Should call Validation with correct value', async () => {
     const { sut, validationStub } = makeSut();

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { AccountModel } from '@/domain/entities';
-import { mockAccountModel } from '@/domain/test';
+import { AccountModel, AuthenticationModel } from '@/domain/entities';
+import { mockAccountModel, mockAuthenticationModel } from '@/domain/test';
 import {
   AddAccount,
   AddAccountParams,
@@ -15,8 +15,10 @@ import {
 
 export const mockAuthentication = (): Authentication => {
   class AuthenticationStub implements Authentication {
-    async auth(authentication: AuthenticationParams): Promise<string> {
-      return Promise.resolve('any_token');
+    async auth(
+      authentication: AuthenticationParams,
+    ): Promise<AuthenticationModel> {
+      return Promise.resolve(mockAuthenticationModel());
     }
   }
   return new AuthenticationStub();
