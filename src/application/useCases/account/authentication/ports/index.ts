@@ -3,7 +3,7 @@ export {
   UpdateAccessTokenRepository,
   LoadAccountByEmailRepository,
 } from '@/application/ports/db/account';
-export { AccountModel } from '@/domain/entities';
+export { AccountModel, AuthenticationModel } from '@/domain/entities';
 export {
   AuthenticationParams,
   Authentication,

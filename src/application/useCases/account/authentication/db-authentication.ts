@@ -6,6 +6,7 @@ import {
   LoadAccountByEmailRepository,
   AuthenticationParams,
   Authentication,
+  AuthenticationModel,
 } from '@/application/useCases/account/authentication/ports';
 
 export class DbAuthentication implements Authentication {
@@ -16,7 +17,9 @@ export class DbAuthentication implements Authentication {
     private readonly updateAccessTokenRepository: UpdateAccessTokenRepository,
   ) {}
 
-  async auth(authentication: AuthenticationParams): Promise<string> {
+  async auth(
+    authentication: AuthenticationParams,
+  ): Promise<AuthenticationModel> {
     const account = await this.loadAccountByEmailRepository.loadByEmail(
       authentication.email,
     );
@@ -27,12 +30,12 @@ export class DbAuthentication implements Authentication {
         account.password,
       );
       if (isValid) {
-        const accesstoken = await this.encrypter.encrypt(account.id);
+        const accessToken = await this.encrypter.encrypt(account.id);
         await this.updateAccessTokenRepository.updateAccessToken(
           account.id,
-          accesstoken,
+          accessToken,
         );
-        return accesstoken;
+        return { accessToken, name: account.name };
       }
     }
     return null as any;
