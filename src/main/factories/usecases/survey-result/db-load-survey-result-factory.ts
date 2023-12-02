@@ -1,0 +1,15 @@
+import { DbLoadSurveyResult } from '@/application/usecases';
+import { LoadSurveyResult } from '@/domain/usecases';
+import {
+  SurveyResultMongoRepository,
+  SurveyMongoRepository,
+} from '@/infrastructure/db';
+
+export const makeDbLoadSurveyResult = (): LoadSurveyResult => {
+  const surveyResultMongoRepository = new SurveyResultMongoRepository();
+  const surveyMongoRepository = new SurveyMongoRepository();
+  return new DbLoadSurveyResult(
+    surveyResultMongoRepository,
+    surveyMongoRepository,
+  );
+};

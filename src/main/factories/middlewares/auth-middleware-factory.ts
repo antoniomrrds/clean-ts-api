@@ -1,4 +1,4 @@
-import { makeDbLoadAccountByToken } from '@/main/factories/usecases/account/load-account-by-token';
+import { makeDbLoadAccountByToken } from '@/main/factories';
 import { AuthMiddleware } from '@/presentation/middlewares';
 import { Middleware } from '@/presentation/ports';
 

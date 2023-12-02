@@ -1,7 +1,10 @@
 {
   "compilerOptions": {
     "target": "ES2021",
-    "rootDir": "src",
+    "rootDirs": [
+      "src",
+      "tests"
+    ],
     "outDir": "dist",
     "module": "commonjs",
     "esModuleInterop": true,
@@ -15,10 +18,14 @@
     "paths": {
       "@/*": [
         "*"
+      ],
+      "@/tests/*": [
+        "../tests/*"
       ]
     }
   },
   "include": [
-    "src"
+    "src",
+    "tests"
   ]
 }
