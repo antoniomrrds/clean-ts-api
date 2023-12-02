@@ -30,7 +30,10 @@ export class SurveyResultMongoRepository
     );
   }
 
-  async loadBySurveyId(surveyId: string): Promise<SurveyResultModel | null> {
+  async loadBySurveyId(
+    surveyId: string,
+    accountId: string,
+  ): Promise<SurveyResultModel | null> {
     const surveyResultCollection =
       await MongoHelper.getCollection('surveyResults');
     const query = new QueryBuilder()
@@ -70,6 +73,17 @@ export class SurveyResultMongoRepository
         count: {
           $sum: 1,
         },
+        currentAccountAnswer: {
+          $push: {
+            $cond: {
+              if: {
+                $eq: ['$data.accountId', MongoHelper.objectId(accountId)],
+              },
+              then: '$data.answer',
+              else: '$nope',
+            },
+          },
+        },
       })
       .project({
         _id: 0,
@@ -107,6 +121,20 @@ export class SurveyResultMongoRepository
                         ],
                       },
                       else: 0,
+                    },
+                  },
+                  isCurrentAccountAnswer: {
+                    $cond: {
+                      if: {
+                        $eq: [
+                          '$$item.answer',
+                          {
+                            $arrayElemAt: ['$currentAccountAnswer', 0],
+                          },
+                        ],
+                      },
+                      then: true,
+                      else: false,
                     },
                   },
                 },
@@ -150,6 +178,7 @@ export class SurveyResultMongoRepository
           date: '$date',
           answer: '$answers.answer',
           image: '$answers.image',
+          isCurrentAccountAnswer: '$answers.isCurrentAccountAnswer',
         },
         count: {
           $sum: '$answers.count',
@@ -166,8 +195,11 @@ export class SurveyResultMongoRepository
         answer: {
           answer: '$_id.answer',
           image: '$_id.image',
-          count: '$count',
-          percent: '$percent',
+          count: {
+            $round: ['$count'],
+          },
+          percent: { $round: ['$percent'] },
+          isCurrentAccountAnswer: '$_id.isCurrentAccountAnswer',
         },
       })
       .sort({

@@ -23,6 +23,7 @@ import { mockSurveyResultModel, throwError } from '@/domain/test';
 import MockDate from 'mockdate';
 
 const mockRequest = (): HttpRequest => ({
+  accountId: 'any_id',
   params: {
     surveyId: 'any_id',
   },
@@ -117,7 +118,10 @@ describe('LoadSurveyResult Controller', () => {
     const httpRequest = mockRequest();
 
     await sut.handle(httpRequest);
-    expect(loadSpy).toHaveBeenCalledWith(httpRequest.params.surveyId);
+    expect(loadSpy).toHaveBeenCalledWith(
+      httpRequest.params.surveyId,
+      httpRequest.accountId,
+    );
   });
   it('Should return 500 if LoadSurveyResult throws', async () => {
     const { sut, loadSurveyResultStub } = makeSut();
