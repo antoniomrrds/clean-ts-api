@@ -5,25 +5,20 @@ import {
   serverError,
   unauthorized,
 } from '@/presentation/helpers';
-import {
-  Controller,
-  HttpRequest,
-  HttpResponse,
-  Validation,
-} from '@/presentation/ports';
+import { Controller, HttpResponse, Validation } from '@/presentation/ports';
 
 export class LoginController implements Controller {
   constructor(
     private readonly authentication: Authentication,
     private readonly validation: Validation,
   ) {}
-  async handle(request: HttpRequest): Promise<HttpResponse> {
+  async handle(request: LoginController.Request): Promise<HttpResponse> {
     try {
-      const error = this.validation.validate(request.body);
+      const error = this.validation.validate(request);
       if (error) {
         return badRequest(error);
       }
-      const { email, password } = request.body;
+      const { email, password } = request;
 
       const AuthenticationModel = await this.authentication.auth({
         email,
@@ -38,4 +33,11 @@ export class LoginController implements Controller {
       return serverError(error);
     }
   }
+}
+
+export namespace LoginController {
+  export type Request = {
+    email: string;
+    password: string;
+  };
 }

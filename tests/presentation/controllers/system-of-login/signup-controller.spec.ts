@@ -11,20 +11,17 @@ import {
   serverError,
 } from '@/presentation/helpers';
 import { throwError } from '@/tests/domain/mocks';
-import { HttpRequest } from '@/presentation/ports';
+import { AddAccountSpy, AuthenticationSpy } from '@/tests/presentation/mocks';
 import { ValidationSpy } from '@/tests/validation/mocks';
 import { faker } from '@faker-js/faker';
-import { AddAccountSpy, AuthenticationSpy } from '@/tests/presentation/mocks';
 
-const mockRequest = (): HttpRequest => {
+const mockRequest = (): SignUpController.Request => {
   const password = faker.internet.password();
   return {
-    body: {
-      name: faker.person.firstName(),
-      email: faker.internet.email(),
-      password,
-      passwordConfirmation: password,
-    },
+    name: faker.person.firstName(),
+    email: faker.internet.email(),
+    password,
+    passwordConfirmation: password,
   };
 };
 
@@ -51,53 +48,48 @@ const makeSut = (): SutTypes => {
     authenticationSpy,
   };
 };
-let httpRequest: HttpRequest;
+const request = mockRequest();
 
 describe('Signup Controller', () => {
-  beforeEach(() => {
-    httpRequest = mockRequest();
-  });
   it('Should call AddAcount with correct values', async () => {
     const { sut, addAccountSpy } = makeSut();
-    await sut.handle(httpRequest);
+    await sut.handle(request);
     expect(addAccountSpy.addAccountParams).toEqual({
-      name: httpRequest.body.name,
-      email: httpRequest.body.email,
-      password: httpRequest.body.password,
+      name: request.name,
+      email: request.email,
+      password: request.password,
     });
   });
 
   it('Should return 403 if AddAccount returns null', async () => {
     const { sut, addAccountSpy } = makeSut();
     addAccountSpy.accountModel = null!;
-    const httpResponse = await sut.handle(httpRequest);
-    expect(httpResponse).toEqual(
-      forbidden(new EmailInUseError(httpRequest.body.email)),
-    );
+    const httpResponse = await sut.handle(request);
+    expect(httpResponse).toEqual(forbidden(new EmailInUseError(request.email)));
   });
 
   it('Should return 500 if AddAccount throws', async () => {
     const { sut, addAccountSpy } = makeSut();
     jest.spyOn(addAccountSpy, 'add').mockImplementationOnce(throwError);
-    const httpResponse = await sut.handle(httpRequest);
+    const httpResponse = await sut.handle(request);
     expect(httpResponse).toEqual(serverError(new ServerError(null!)));
   });
   it('Should return 201 if valid data is provided', async () => {
     const { sut, authenticationSpy } = makeSut();
-    const httpResponse = await sut.handle(mockRequest());
+    const httpResponse = await sut.handle(request);
     expect(httpResponse).toEqual(
       created(authenticationSpy.authenticationModel),
     );
   });
   it('Should call Validation with correct value', async () => {
     const { sut, validationSpy } = makeSut();
-    await sut.handle(httpRequest);
-    expect(validationSpy.input).toEqual(httpRequest.body);
+    await sut.handle(request);
+    expect(validationSpy.input).toEqual(request);
   });
   it('Should return 400 if Validation returns an error', async () => {
     const { sut, validationSpy } = makeSut();
     validationSpy.error = new MissingParamError(faker.lorem.word());
-    const httpResponse = await sut.handle(httpRequest);
+    const httpResponse = await sut.handle(request);
     expect(httpResponse).toEqual(badRequest(validationSpy.error));
   });
 
@@ -112,16 +104,16 @@ describe('Signup Controller', () => {
 
   it('Should call Authentication with correct values', async () => {
     const { sut, authenticationSpy } = makeSut();
-    await sut.handle(httpRequest);
+    await sut.handle(request);
     expect(authenticationSpy.authenticationParams).toEqual({
-      email: httpRequest.body.email,
-      password: httpRequest.body.password,
+      email: request.email,
+      password: request.password,
     });
   });
   it('Should return 500 if Authentication throws', async () => {
     const { sut, authenticationSpy } = makeSut();
     jest.spyOn(authenticationSpy, 'auth').mockImplementationOnce(throwError);
-    const httpResponse = await sut.handle(httpRequest);
+    const httpResponse = await sut.handle(request);
     expect(httpResponse).toEqual(serverError(new Error()));
   });
 });

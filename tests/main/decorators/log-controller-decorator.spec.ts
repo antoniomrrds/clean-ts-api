@@ -1,33 +1,22 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { LogControllerDecorator } from '@/main/decorators';
 import { ok, serverError } from '@/presentation/helpers';
-import { Controller, HttpRequest, HttpResponse } from '@/presentation/ports';
-import { LogErrorRepositorySpy } from '@/tests/application/mocks';
+import { Controller, HttpResponse } from '@/presentation/ports';
 import { mockAccountModel } from '@/tests/domain/mocks';
+import { LogErrorRepositorySpy } from '@/tests/application/mocks';
 import { faker } from '@faker-js/faker';
 
 class ControllerSpy implements Controller {
   httpResponse = ok(mockAccountModel());
-  httpRequest?: HttpRequest;
+  request: any;
 
-  async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
-    this.httpRequest = httpRequest;
+  async handle(request: any): Promise<HttpResponse> {
+    this.request = request;
     return this.httpResponse;
   }
 }
 
-const mockRequest = (): HttpRequest => {
-  const password = faker.internet.password();
-  return {
-    body: {
-      name: faker.person.fullName(),
-      email: faker.internet.email(),
-      password,
-      passwordConfirmation: password,
-    },
-  };
-};
-
-let httpRequest: HttpRequest;
+const request = faker.lorem.sentence();
 
 const mockServerError = (): HttpResponse => {
   const fakeError = new Error();
@@ -53,26 +42,21 @@ const makeSut = (): SutTypes => {
 };
 
 describe('LogController Decorator', () => {
-  beforeEach(() => {
-    httpRequest = mockRequest();
-  });
   test('Should call controller handle', async () => {
     const { sut, controllerSpy } = makeSut();
-    await sut.handle(httpRequest);
-    expect(controllerSpy.httpRequest).toEqual(httpRequest);
+    await sut.handle(request);
+    expect(controllerSpy.request).toEqual(request);
   });
-
   test('Should return the same result of the controller', async () => {
     const { sut, controllerSpy } = makeSut();
-    const httpResponse = await sut.handle(httpRequest);
+    const httpResponse = await sut.handle(request);
     expect(httpResponse).toEqual(controllerSpy.httpResponse);
   });
-
   test('Should call LogErrorRepository with correct error if controller returns a server error', async () => {
     const { sut, controllerSpy, logErrorRepositorySpy } = makeSut();
     const serverError = mockServerError();
     controllerSpy.httpResponse = serverError;
-    await sut.handle(httpRequest);
+    await sut.handle(request);
     expect(logErrorRepositorySpy.stack).toBe(serverError.body.stack);
   });
 });

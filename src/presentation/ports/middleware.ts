@@ -1,5 +1,6 @@
-import { HttpRequest, HttpResponse } from '@/presentation/ports';
+import { HttpResponse } from '@/presentation/ports';
 
-export interface Middleware {
-  handle: (httpRequest: HttpRequest) => Promise<HttpResponse>;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export interface Middleware<M = any> {
+  handle: (request: M) => Promise<HttpResponse>;
 }

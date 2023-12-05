@@ -1,6 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { LogErrorRepository } from '@/application/ports/db/log';
-import { Controller, HttpRequest, HttpResponse } from '@/presentation/ports';
+import { Controller, HttpResponse } from '@/presentation/ports';
 
 export class LogControllerDecorator implements Controller {
   constructor(
@@ -8,7 +8,7 @@ export class LogControllerDecorator implements Controller {
     private readonly logErrorRepository: LogErrorRepository,
   ) {}
 
-  async handle(request: HttpRequest): Promise<HttpResponse> {
+  async handle(request: any): Promise<HttpResponse> {
     const httpResponse = await this.controller.handle(request);
     if (httpResponse?.statusCode === 500) {
       await this.logErrorRepository.logError(httpResponse.body.stack);
