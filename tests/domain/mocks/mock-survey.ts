@@ -1,8 +1,8 @@
 import { SurveyModel } from '@/domain/entities';
-import { AddSurveyParams } from '@/domain/usecases/survey';
+import { AddSurvey } from '@/domain/usecases';
 import { faker } from '@faker-js/faker';
 
-export const mockSurveyParams = (): AddSurveyParams => ({
+export const mockSurveyParams = (): AddSurvey.Params => ({
   question: faker.lorem.words(),
   answers: [
     {

@@ -1,5 +1,5 @@
 import { AccountModel, AuthenticationModel } from '@/domain/entities';
-import { AddAccount, AuthenticationParams } from '@/domain/usecases/account';
+import { AddAccount, AuthenticationParams } from '@/domain/usecases';
 
 import { faker } from '@faker-js/faker';
 

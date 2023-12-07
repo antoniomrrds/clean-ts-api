@@ -1,7 +1,7 @@
 import { SurveyModel } from '@/domain/entities';
-
-export type AddSurveyParams = Omit<SurveyModel, 'id'>;
-
 export interface AddSurvey {
-  add(surveyData: AddSurveyParams): Promise<void>;
+  add(surveyData: AddSurvey.Params): Promise<void>;
+}
+export namespace AddSurvey {
+  export type Params = Omit<SurveyModel, 'id'>;
 }

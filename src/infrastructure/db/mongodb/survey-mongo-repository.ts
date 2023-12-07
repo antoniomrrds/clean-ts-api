@@ -5,7 +5,6 @@ import {
 } from '@/application/ports';
 import { SurveyModel } from '@/domain/entities';
 
-import { AddSurveyParams } from '@/domain/usecases';
 import { MongoHelper, QueryBuilder } from '@/infrastructure/db';
 export class SurveyMongoRepository
   implements
@@ -13,7 +12,7 @@ export class SurveyMongoRepository
     LoadSurveysRepository,
     LoadSurveyByIdRepository
 {
-  async add(surveyData: AddSurveyParams): Promise<void> {
+  async add(surveyData: AddSurveyRepository.Params): Promise<void> {
     const surveyCollection = await MongoHelper.getCollection('surveys');
     await surveyCollection.insertOne(surveyData);
   }

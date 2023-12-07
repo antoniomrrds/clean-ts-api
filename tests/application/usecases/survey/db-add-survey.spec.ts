@@ -1,5 +1,4 @@
 import { DbAddSurvey } from '@/application/usecases';
-import { AddSurveyParams } from '@/domain/usecases/survey';
 import { AddSurveyRepositorySpy } from '@/tests/application/mocks';
 import { mockSurveyParams, throwError } from '@/tests/domain/mocks';
 import MockDate from 'mockdate';
@@ -18,7 +17,7 @@ const makeSut = (): SutTypes => {
   };
 };
 
-let surveyData: AddSurveyParams;
+const surveyData = mockSurveyParams();
 
 describe('DbAddSurvey Usecase', () => {
   beforeAll(() => {
@@ -27,9 +26,6 @@ describe('DbAddSurvey Usecase', () => {
 
   afterAll(() => {
     MockDate.reset();
-  });
-  beforeEach(() => {
-    surveyData = mockSurveyParams();
   });
 
   it('Should call AddSurveyRepository with correct values', async () => {

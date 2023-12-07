@@ -5,14 +5,12 @@ import {
 } from '@/application/ports';
 import { SurveyModel } from '@/domain/entities';
 import { mockSurveyModel, mockSurveysModels } from '@/tests/domain/mocks';
-import { AddSurveyParams } from '@/domain/usecases/survey';
 
 export class AddSurveyRepositorySpy implements AddSurveyRepository {
-  addSurveyParams?: AddSurveyParams;
+  Params?: AddSurveyRepository.Params;
 
-  async add(surveyData: AddSurveyParams): Promise<void> {
-    this.addSurveyParams = surveyData;
-    return Promise.resolve();
+  async add(surveyData: AddSurveyRepository.Params): Promise<void> {
+    this.Params = surveyData;
   }
 }
 

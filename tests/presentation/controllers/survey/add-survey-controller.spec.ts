@@ -59,7 +59,7 @@ describe('AddSurvey Controller', () => {
   it('Should call AddSurvey with correct values', async () => {
     const { sut, addSurveySpy } = makeSut();
     await sut.handle(request);
-    expect(addSurveySpy.addSurveyParams).toEqual({
+    expect(addSurveySpy.Params).toEqual({
       ...request,
       date: new Date(),
     });
