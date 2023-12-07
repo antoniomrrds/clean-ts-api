@@ -4,7 +4,7 @@ import {
   LoadAccountByEmailRepository,
 } from '@/application/ports';
 import { AccountModel } from '@/domain/entities';
-import { AddAccount, AddAccountParams } from '@/domain/usecases';
+import { AddAccount } from '@/domain/usecases';
 
 export class DbAddAccount implements AddAccount {
   constructor(
@@ -13,18 +13,18 @@ export class DbAddAccount implements AddAccount {
     private readonly loadAccountByEmailRepository: LoadAccountByEmailRepository,
   ) {}
 
-  async add(accountData: AddAccountParams): Promise<AccountModel> {
+  async add(accountData: AddAccount.Params): Promise<AddAccount.Result> {
     const account = await this.loadAccountByEmailRepository.loadByEmail(
       accountData.email,
     );
+    let newAccount: AccountModel | null = null;
     if (!account) {
       const hashedPassword = await this.hasher.hash(accountData.password);
-      const account = await this.addAccountRepository.add(
-        Object.assign({}, accountData, { password: hashedPassword }),
-      );
-      return account;
+      newAccount = await this.addAccountRepository.add({
+        ...accountData,
+        password: hashedPassword,
+      });
     }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return null as any;
+    return newAccount != null;
   }
 }

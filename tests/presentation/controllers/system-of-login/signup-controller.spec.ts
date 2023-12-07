@@ -54,7 +54,7 @@ describe('Signup Controller', () => {
   it('Should call AddAcount with correct values', async () => {
     const { sut, addAccountSpy } = makeSut();
     await sut.handle(request);
-    expect(addAccountSpy.addAccountParams).toEqual({
+    expect(addAccountSpy.Params).toEqual({
       name: request.name,
       email: request.email,
       password: request.password,
@@ -63,7 +63,7 @@ describe('Signup Controller', () => {
 
   it('Should return 403 if AddAccount returns null', async () => {
     const { sut, addAccountSpy } = makeSut();
-    addAccountSpy.accountModel = null!;
+    addAccountSpy.isValid = false;
     const httpResponse = await sut.handle(request);
     expect(httpResponse).toEqual(forbidden(new EmailInUseError(request.email)));
   });

@@ -1,7 +1,6 @@
 import { mockAddAccountParams } from '@/tests/domain/mocks';
 import { AccountMongoRepository, MongoHelper } from '@/infrastructure/db';
 import { Collection } from 'mongodb';
-import { AddAccountParams } from '@/domain/usecases';
 import { faker } from '@faker-js/faker';
 
 const makeSut = (): AccountMongoRepository => {
@@ -9,11 +8,8 @@ const makeSut = (): AccountMongoRepository => {
 };
 let accountCollection: Collection;
 
-let addAccountParams: AddAccountParams;
+const addAccountParams = mockAddAccountParams();
 describe('Account Mongo Repository', () => {
-  beforeEach(() => {
-    addAccountParams = mockAddAccountParams();
-  });
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL as string);
   });

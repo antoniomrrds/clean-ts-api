@@ -1,7 +1,6 @@
 import { AccountModel, AuthenticationModel } from '@/domain/entities';
 import {
   AddAccount,
-  AddAccountParams,
   Authentication,
   AuthenticationParams,
   LoadAccountByToken,
@@ -10,12 +9,11 @@ import { mockAccountModel } from '@/tests/domain/mocks';
 import { faker } from '@faker-js/faker';
 
 export class AddAccountSpy implements AddAccount {
-  accountModel = mockAccountModel();
-  addAccountParams?: AddAccountParams;
-
-  async add(account: AddAccountParams): Promise<AccountModel> {
-    this.addAccountParams = account;
-    return this.accountModel;
+  Params?: AddAccount.Params;
+  isValid = true;
+  async add(account: AddAccount.Params): Promise<AddAccount.Result> {
+    this.Params = account;
+    return this.isValid;
   }
 }
 

@@ -6,15 +6,14 @@ import {
 } from '@/application/ports';
 import { AccountModel } from '@/domain/entities';
 import { mockAccountModel } from '@/tests/domain/mocks';
-import { AddAccountParams } from '@/domain/usecases';
 
 export class AddAccountRepositorySpy implements AddAccountRepository {
-  accountModel = mockAccountModel();
-  AddAccountParams?: AddAccountParams;
+  result = mockAccountModel();
+  Params?: AddAccountRepository.Params;
 
-  async add(accountData: AddAccountParams): Promise<AccountModel> {
-    this.AddAccountParams = accountData;
-    return Promise.resolve(this.accountModel);
+  async add(accountData: AddAccountRepository.Params): Promise<AccountModel> {
+    this.Params = accountData;
+    return Promise.resolve(this.result);
   }
 }
 
