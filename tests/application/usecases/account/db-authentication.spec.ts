@@ -6,7 +6,6 @@ import {
   LoadAccountByEmailRepositorySpy,
   UpdateAccessTokenRepositorySpy,
 } from '@/tests/application/mocks';
-import { AuthenticationParams } from '@/domain/usecases';
 
 type SutTypes = {
   sut: DbAuthentication;
@@ -36,12 +35,8 @@ const makeSut = (): SutTypes => {
   };
 };
 
-let autheticationParams: AuthenticationParams;
-
+const autheticationParams = mockAuthenticationParams();
 describe('DbAuthentication UseCase', () => {
-  beforeEach(() => {
-    autheticationParams = mockAuthenticationParams();
-  });
   it('Should call loadAccountByEmailRepository with correct email', async () => {
     const { sut, loadAccountByEmailRepositorySpy } = makeSut();
     await sut.auth(autheticationParams);

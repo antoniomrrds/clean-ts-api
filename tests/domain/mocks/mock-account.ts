@@ -1,5 +1,5 @@
-import { AccountModel, AuthenticationModel } from '@/domain/entities';
-import { AddAccount, AuthenticationParams } from '@/domain/usecases';
+import { AccountModel } from '@/domain/entities';
+import { AddAccount, Authentication } from '@/domain/usecases';
 
 import { faker } from '@faker-js/faker';
 
@@ -14,12 +14,12 @@ export const mockAccountModel = (): AccountModel =>
     id: faker.string.uuid(),
   });
 
-export const mockAuthenticationParams = (): AuthenticationParams => ({
+export const mockAuthenticationParams = (): Authentication.Params => ({
   email: faker.internet.email(),
   password: faker.internet.password(),
 });
 
-export const mockAuthenticationModel = (): AuthenticationModel => ({
-  name: faker.person.fullName(),
-  accessToken: faker.string.uuid(),
-});
+// export const mockAuthenticationModel = (): Authentication.Result => ({
+//   name: faker.person.fullName(),
+//   accessToken: faker.string.uuid(),
+// });

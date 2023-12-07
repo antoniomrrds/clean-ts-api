@@ -105,7 +105,7 @@ describe('Signup Controller', () => {
   it('Should call Authentication with correct values', async () => {
     const { sut, authenticationSpy } = makeSut();
     await sut.handle(request);
-    expect(authenticationSpy.authenticationParams).toEqual({
+    expect(authenticationSpy.Params).toEqual({
       email: request.email,
       password: request.password,
     });
