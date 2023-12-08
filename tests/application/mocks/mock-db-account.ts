@@ -4,11 +4,10 @@ import {
   LoadAccountByTokenRepository,
   UpdateAccessTokenRepository,
 } from '@/application/ports';
-import { AccountModel } from '@/domain/entities';
-import { mockAccountModel } from '@/tests/domain/mocks';
+import { faker } from '@faker-js/faker';
 
 export class AddAccountRepositorySpy implements AddAccountRepository {
-  result = mockAccountModel();
+  result = true;
   Params?: AddAccountRepository.Params;
 
   async add(
@@ -23,19 +22,25 @@ export class LoadAccountByEmailRepositorySpy
   implements LoadAccountByEmailRepository
 {
   email?: string;
-  accountModel = mockAccountModel();
+  result = {
+    id: faker.string.uuid(),
+    name: faker.person.fullName(),
+    password: faker.internet.password(),
+  };
 
-  async loadByEmail(email: string): Promise<AccountModel | null> {
+  async loadByEmail(
+    email: string,
+  ): Promise<LoadAccountByEmailRepository.Result> {
     {
       this.email = email;
-      return this.accountModel;
+      return this.result;
     }
   }
 }
 export class LoadAccountByTokenRepositorySpy
   implements LoadAccountByTokenRepository
 {
-  accountModel = mockAccountModel();
+  result = { id: faker.string.uuid() };
   token?: string;
   role?: string;
 
@@ -45,7 +50,7 @@ export class LoadAccountByTokenRepositorySpy
   ): Promise<LoadAccountByTokenRepository.Result> {
     this.token = token;
     this.role = role;
-    return this.accountModel;
+    return this.result;
   }
 }
 export class UpdateAccessTokenRepositorySpy

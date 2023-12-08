@@ -4,7 +4,6 @@ import {
   LoadAccountByTokenRepository,
   UpdateAccessTokenRepository,
 } from '@/application/ports';
-import { AccountModel } from '@/domain/entities';
 import { MongoHelper } from '@/infrastructure/db';
 
 export class AccountMongoRepository
@@ -23,12 +22,23 @@ export class AccountMongoRepository
     const accountDocument = await accountCollection?.findOne({
       _id: result?.insertedId,
     });
-    return MongoHelper.map(accountDocument);
+    return MongoHelper.map(accountDocument) !== null;
   }
 
-  async loadByEmail(email: string): Promise<AccountModel | null> {
+  async loadByEmail(
+    email: string,
+  ): Promise<LoadAccountByEmailRepository.Result> {
     const accountCollection = await MongoHelper.getCollection('accounts');
-    const account = await accountCollection?.findOne({ email });
+    const account = await accountCollection?.findOne(
+      { email },
+      {
+        projection: {
+          _id: 1,
+          name: 1,
+          password: 1,
+        },
+      },
+    );
     return account && MongoHelper.map(account);
   }
 

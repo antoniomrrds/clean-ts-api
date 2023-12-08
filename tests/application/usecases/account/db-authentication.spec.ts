@@ -56,7 +56,7 @@ describe('DbAuthentication UseCase', () => {
 
   it('Should return null if loadAccountByEmailRepository returns null', async () => {
     const { sut, loadAccountByEmailRepositorySpy } = makeSut();
-    loadAccountByEmailRepositorySpy.accountModel = null!;
+    loadAccountByEmailRepositorySpy.result = null!;
     const model = await sut.auth(autheticationParams);
     expect(model).toBeNull();
   });
@@ -66,7 +66,7 @@ describe('DbAuthentication UseCase', () => {
     await sut.auth(autheticationParams);
     expect(hashComparerSpy.plaintext).toBe(autheticationParams.password);
     expect(hashComparerSpy.digest).toBe(
-      loadAccountByEmailRepositorySpy.accountModel.password,
+      loadAccountByEmailRepositorySpy.result.password,
     );
   });
 
@@ -88,7 +88,7 @@ describe('DbAuthentication UseCase', () => {
     const { sut, encrypterSpy, loadAccountByEmailRepositorySpy } = makeSut();
     await sut.auth(autheticationParams);
     expect(encrypterSpy.plaintext).toBe(
-      loadAccountByEmailRepositorySpy.accountModel.id,
+      loadAccountByEmailRepositorySpy.result.id,
     );
   });
 
@@ -103,7 +103,7 @@ describe('DbAuthentication UseCase', () => {
     const { sut, encrypterSpy, loadAccountByEmailRepositorySpy } = makeSut();
     const { accessToken, name } = await sut.auth(autheticationParams);
     expect(accessToken).toBe(encrypterSpy.ciphertext);
-    expect(name).toBe(loadAccountByEmailRepositorySpy.accountModel.name);
+    expect(name).toBe(loadAccountByEmailRepositorySpy.result.name);
   });
 
   it('Should call UpdateAccessTokenRepository with correct values', async () => {
@@ -115,7 +115,7 @@ describe('DbAuthentication UseCase', () => {
     } = makeSut();
     await sut.auth(autheticationParams);
     expect(updateAccessTokenRepositorySpy.id).toBe(
-      loadAccountByEmailRepositorySpy.accountModel.id,
+      loadAccountByEmailRepositorySpy.result.id,
     );
     expect(updateAccessTokenRepositorySpy.token).toBe(encrypterSpy.ciphertext);
   });
