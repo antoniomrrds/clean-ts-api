@@ -3,6 +3,7 @@ import {
   LoadAccountByEmailRepository,
   LoadAccountByTokenRepository,
   UpdateAccessTokenRepository,
+  CheckAccountByEmailRepository,
 } from '@/application/ports';
 import { MongoHelper } from '@/infrastructure/db';
 
@@ -11,7 +12,8 @@ export class AccountMongoRepository
     AddAccountRepository,
     LoadAccountByEmailRepository,
     UpdateAccessTokenRepository,
-    LoadAccountByTokenRepository
+    LoadAccountByTokenRepository,
+    CheckAccountByEmailRepository
 {
   async add(
     accountData: AddAccountRepository.Params,
@@ -23,6 +25,21 @@ export class AccountMongoRepository
       _id: result?.insertedId,
     });
     return MongoHelper.map(accountDocument) !== null;
+  }
+
+  async checkByEmail(
+    email: string,
+  ): Promise<CheckAccountByEmailRepository.Result> {
+    const accountCollection = await MongoHelper.getCollection('accounts');
+    const account = await accountCollection?.findOne(
+      { email },
+      {
+        projection: {
+          _id: 1,
+        },
+      },
+    );
+    return account !== null;
   }
 
   async loadByEmail(
