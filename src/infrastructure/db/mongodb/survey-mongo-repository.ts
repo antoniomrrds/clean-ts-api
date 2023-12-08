@@ -1,5 +1,6 @@
 import {
   AddSurveyRepository,
+  CheckSurveyByIdRepository,
   LoadSurveyByIdRepository,
   LoadSurveysRepository,
 } from '@/application/ports';
@@ -10,7 +11,8 @@ export class SurveyMongoRepository
   implements
     AddSurveyRepository,
     LoadSurveysRepository,
-    LoadSurveyByIdRepository
+    LoadSurveyByIdRepository,
+    CheckSurveyByIdRepository
 {
   async add(surveyData: AddSurveyRepository.Params): Promise<void> {
     const surveyCollection = await MongoHelper.getCollection('surveys');
@@ -51,14 +53,28 @@ export class SurveyMongoRepository
       .build();
 
     const surveys = await surveyCollection.aggregate(query).toArray();
-    return MongoHelper.mapCollection<SurveyModel>(surveys);
+    return MongoHelper.mapCollection(surveys);
   }
 
-  async loadById(id: string): Promise<SurveyModel> {
+  async loadById(id: string): Promise<LoadSurveyByIdRepository.Result> {
     const surveyCollection = await MongoHelper.getCollection('surveys');
     const survey = await surveyCollection.findOne({
       _id: MongoHelper.objectId(id),
     });
     return MongoHelper.map<SurveyModel>(survey);
+  }
+  async checkById(id: string): Promise<CheckSurveyByIdRepository.Result> {
+    const surveyCollection = await MongoHelper.getCollection('surveys');
+    const survey = await surveyCollection.findOne(
+      {
+        _id: MongoHelper.objectId(id),
+      },
+      {
+        projection: {
+          _id: 1,
+        },
+      },
+    );
+    return survey !== null;
   }
 }

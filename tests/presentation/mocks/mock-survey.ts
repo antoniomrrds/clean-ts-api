@@ -4,6 +4,7 @@ import {
   AddSurvey,
   LoadSurveyById,
   LoadSurveys,
+  CheckSurveyById,
 } from '@/domain/usecases/survey';
 export class AddSurveySpy implements AddSurvey {
   Params?: AddSurvey.Params;
@@ -27,8 +28,17 @@ export class LoadSurveyByIdSpy implements LoadSurveyById {
   surveyModel = mockSurveyModel();
   id?: string;
 
-  async loadById(id: string): Promise<SurveyModel> {
+  async loadById(id: string): Promise<LoadSurveyById.Result> {
     this.id = id;
     return this.surveyModel;
+  }
+}
+export class CheckSurveyByIdSpy implements CheckSurveyById {
+  result = true;
+  id?: string;
+
+  async checkById(id: string): Promise<CheckSurveyById.Result> {
+    this.id = id;
+    return this.result;
   }
 }

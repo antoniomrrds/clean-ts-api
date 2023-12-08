@@ -1,6 +1,6 @@
 import {
   makeLogControllerDecorator,
-  makeDbLoadSurveyById,
+  makeDbCheckSurveyById,
   makeLoadSurveyResultValidation,
   makeDbLoadSurveyResult,
 } from '@/main/factories';
@@ -9,7 +9,7 @@ import { LoadSurveyResultController } from '@/presentation/controllers';
 
 export const makeLoadSurveyResultController = (): Controller => {
   const controller = new LoadSurveyResultController(
-    makeDbLoadSurveyById(),
+    makeDbCheckSurveyById(),
     makeLoadSurveyResultValidation(),
     makeDbLoadSurveyResult(),
   );

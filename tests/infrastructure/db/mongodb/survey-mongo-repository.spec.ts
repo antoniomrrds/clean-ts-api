@@ -2,6 +2,7 @@ import { MongoHelper, SurveyMongoRepository } from '@/infrastructure/db';
 import { Collection } from 'mongodb';
 import MockDate from 'mockdate';
 import { mockAddAccountParams, mockSurveyParams } from '@/tests/domain/mocks';
+import { faker } from '@faker-js/faker';
 
 const makeSut = (): SurveyMongoRepository => {
   return new SurveyMongoRepository();
@@ -88,6 +89,21 @@ describe('Account Mongo Repository', () => {
       const survey = await sut.loadById(surveyResult);
       expect(survey).toBeTruthy();
       expect(survey?.id).toBeTruthy();
+    });
+  });
+  describe('checkById()', () => {
+    it('Should return true if survey exists', async () => {
+      const insertSurvey = await surveyCollection.insertOne(mockSurveyParams());
+      const surveyResult = insertSurvey.insertedId.toString();
+
+      const sut = makeSut();
+      const exists = await sut.checkById(surveyResult);
+      expect(exists).toBe(true);
+    });
+    it('Should return false if survey not exists', async () => {
+      const sut = makeSut();
+      const exists = await sut.checkById(faker.database.mongodbObjectId());
+      expect(exists).toBe(false);
     });
   });
 });
