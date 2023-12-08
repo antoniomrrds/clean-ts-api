@@ -18,8 +18,3 @@ export const mockAuthenticationParams = (): Authentication.Params => ({
   email: faker.internet.email(),
   password: faker.internet.password(),
 });
-
-// export const mockAuthenticationModel = (): Authentication.Result => ({
-//   name: faker.person.fullName(),
-//   accessToken: faker.string.uuid(),
-// });

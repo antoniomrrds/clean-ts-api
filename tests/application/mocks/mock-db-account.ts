@@ -11,9 +11,11 @@ export class AddAccountRepositorySpy implements AddAccountRepository {
   result = mockAccountModel();
   Params?: AddAccountRepository.Params;
 
-  async add(accountData: AddAccountRepository.Params): Promise<AccountModel> {
+  async add(
+    accountData: AddAccountRepository.Params,
+  ): Promise<AddAccountRepository.Result> {
     this.Params = accountData;
-    return Promise.resolve(this.result);
+    return this.result;
   }
 }
 
@@ -26,7 +28,7 @@ export class LoadAccountByEmailRepositorySpy
   async loadByEmail(email: string): Promise<AccountModel | null> {
     {
       this.email = email;
-      return Promise.resolve(this.accountModel);
+      return this.accountModel;
     }
   }
 }
@@ -37,10 +39,13 @@ export class LoadAccountByTokenRepositorySpy
   token?: string;
   role?: string;
 
-  async loadByToken(token: string, role?: string): Promise<AccountModel> {
+  async loadByToken(
+    token: string,
+    role?: string,
+  ): Promise<LoadAccountByTokenRepository.Result> {
     this.token = token;
     this.role = role;
-    return Promise.resolve(this.accountModel);
+    return this.accountModel;
   }
 }
 export class UpdateAccessTokenRepositorySpy
@@ -52,6 +57,5 @@ export class UpdateAccessTokenRepositorySpy
   async updateAccessToken(id: string, token: string): Promise<void> {
     this.id = id;
     this.token = token;
-    return Promise.resolve();
   }
 }
