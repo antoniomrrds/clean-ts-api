@@ -1,6 +1,8 @@
-import { LoadSurveyResultRepositorySpy } from '@/tests/application/mocks';
+import {
+  LoadSurveyByIdRepositorySpy,
+  LoadSurveyResultRepositorySpy,
+} from '@/tests/application/mocks';
 import { DbLoadSurveyResult } from '@/application/usecases';
-import { LoadSurveyByIdRepositorySpy } from '@/tests/application/mocks';
 
 import { throwError } from '@/tests/domain/mocks';
 import { faker } from '@faker-js/faker';

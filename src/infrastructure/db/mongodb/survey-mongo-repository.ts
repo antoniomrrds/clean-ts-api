@@ -1,6 +1,7 @@
 import {
   AddSurveyRepository,
   CheckSurveyByIdRepository,
+  LoadAnswersBySurveyRepository,
   LoadSurveyByIdRepository,
   LoadSurveysRepository,
 } from '@/application/ports';
@@ -12,7 +13,8 @@ export class SurveyMongoRepository
     AddSurveyRepository,
     LoadSurveysRepository,
     LoadSurveyByIdRepository,
-    CheckSurveyByIdRepository
+    CheckSurveyByIdRepository,
+    LoadAnswersBySurveyRepository
 {
   async add(surveyData: AddSurveyRepository.Params): Promise<void> {
     const surveyCollection = await MongoHelper.getCollection('surveys');
@@ -61,8 +63,24 @@ export class SurveyMongoRepository
     const survey = await surveyCollection.findOne({
       _id: MongoHelper.objectId(id),
     });
-    return MongoHelper.map<SurveyModel>(survey);
+    return survey && MongoHelper.map(survey);
   }
+
+  async loadAnswers(id: string): Promise<LoadAnswersBySurveyRepository.Result> {
+    const surveyCollection = await MongoHelper.getCollection('surveys');
+    const query = new QueryBuilder()
+      .match({
+        _id: MongoHelper.objectId(id),
+      })
+      .project({
+        _id: 0,
+        answers: '$answers.answer',
+      })
+      .build();
+    const surveys = await surveyCollection.aggregate(query).toArray();
+    return surveys[0]?.answers || [];
+  }
+
   async checkById(id: string): Promise<CheckSurveyByIdRepository.Result> {
     const surveyCollection = await MongoHelper.getCollection('surveys');
     const survey = await surveyCollection.findOne(

@@ -24,7 +24,7 @@ export const MongoHelper = {
     const { _id, ...dataWithoutId } = data;
     return {
       ...dataWithoutId,
-      id: String(_id),
+      id: _id.toHexString(),
     } as T;
   },
 

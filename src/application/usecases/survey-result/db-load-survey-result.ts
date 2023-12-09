@@ -18,7 +18,7 @@ export class DbLoadSurveyResult implements LoadSurveyResult {
     );
     if (!surveyResult) {
       const survey = await this.loadSurveyByIdRepository.loadById(surveyId);
-      surveyResult = this.makeEmptyResult(survey);
+      surveyResult = this.makeEmptyResult(survey!);
     }
     return surveyResult;
   }

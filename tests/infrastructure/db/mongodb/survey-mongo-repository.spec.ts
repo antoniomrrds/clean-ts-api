@@ -2,7 +2,7 @@ import { MongoHelper, SurveyMongoRepository } from '@/infrastructure/db';
 import { Collection } from 'mongodb';
 import MockDate from 'mockdate';
 import { mockAddAccountParams, mockSurveyParams } from '@/tests/domain/mocks';
-import { faker } from '@faker-js/faker';
+import FakeObjectId from 'bson-objectid';
 
 const makeSut = (): SurveyMongoRepository => {
   return new SurveyMongoRepository();
@@ -90,7 +90,36 @@ describe('Account Mongo Repository', () => {
       expect(survey).toBeTruthy();
       expect(survey?.id).toBeTruthy();
     });
+    it('Should return null if survey not exists', async () => {
+      const sut = makeSut();
+      const id = new FakeObjectId().toHexString();
+      const survey = await sut.loadById(id);
+      expect(survey).toBeFalsy();
+    });
   });
+
+  describe('loadAnswers()', () => {
+    it('Should load answers on success', async () => {
+      const insertSurvey = await surveyCollection.insertOne(mockSurveyParams());
+      const surveyId = insertSurvey.insertedId.toHexString();
+      const surveyResult = await surveyCollection.findOne({
+        _id: insertSurvey.insertedId,
+      });
+      const sut = makeSut();
+      const answers = await sut.loadAnswers(surveyId);
+      expect(answers).toEqual([
+        surveyResult?.answers[0].answer,
+        surveyResult?.answers[1].answer,
+      ]);
+    });
+    it('Should return empty array if survey does not exists', async () => {
+      const sut = makeSut();
+      const id = new FakeObjectId().toHexString();
+      const answers = await sut.loadAnswers(id);
+      expect(answers).toEqual([]);
+    });
+  });
+
   describe('checkById()', () => {
     it('Should return true if survey exists', async () => {
       const insertSurvey = await surveyCollection.insertOne(mockSurveyParams());
@@ -102,7 +131,8 @@ describe('Account Mongo Repository', () => {
     });
     it('Should return false if survey not exists', async () => {
       const sut = makeSut();
-      const exists = await sut.checkById(faker.database.mongodbObjectId());
+      const id = new FakeObjectId().toHexString();
+      const exists = await sut.checkById(id);
       expect(exists).toBe(false);
     });
   });

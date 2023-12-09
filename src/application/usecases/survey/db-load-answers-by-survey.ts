@@ -1,13 +1,12 @@
-import { LoadSurveyByIdRepository } from '@/application/ports';
+import { LoadAnswersBySurveyRepository } from '@/application/ports';
 import { LoadAnswersBySurvey } from '@/domain/usecases';
 
 export class DbLoadAnswersBySurvey implements LoadAnswersBySurvey {
   constructor(
-    private readonly loadSurveyByIdRepository: LoadSurveyByIdRepository,
+    private readonly loadAnswersBySurveyRepository: LoadAnswersBySurveyRepository,
   ) {}
 
   async loadAnswers(id: string): Promise<LoadAnswersBySurvey.Result> {
-    const survey = await this.loadSurveyByIdRepository.loadById(id);
-    return survey?.answers.map(a => a.answer) || [];
+    return this.loadAnswersBySurveyRepository.loadAnswers(id);
   }
 }
