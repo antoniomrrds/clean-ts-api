@@ -1,5 +1,4 @@
 import { DbSaveSurveyResult } from '@/application/usecases';
-import { SaveSurveyResultParams } from '@/domain/usecases';
 import {
   LoadSurveyResultRepositorySpy,
   SaveSurveyResultRepositorySpy,
@@ -28,7 +27,7 @@ const makeSut = (): SutTypes => {
     loadSurveyResultRepositorySpy,
   };
 };
-let surveyResultData: SaveSurveyResultParams;
+const surveyResultData = mockSaveSurveyResultParams();
 describe('DbSaveSurveyResult Usecase', () => {
   beforeAll(() => {
     MockDate.set(new Date());
@@ -36,10 +35,6 @@ describe('DbSaveSurveyResult Usecase', () => {
 
   afterAll(() => {
     MockDate.reset();
-  });
-
-  beforeEach(() => {
-    surveyResultData = mockSaveSurveyResultParams();
   });
   describe('save()', () => {
     it('Should call SaveSurveyResultRepository with correct values', async () => {

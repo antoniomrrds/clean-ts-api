@@ -2,16 +2,14 @@ import {
   LoadSurveyResultRepository,
   SaveSurveyResultRepository,
 } from '@/application/ports/db';
-import { SurveyResultModel } from '@/domain/entities';
 import { mockSurveyResultModel } from '@/tests/domain/mocks';
-import { SaveSurveyResultParams } from '@/domain/usecases';
 
 export class SaveSurveyResultRepositorySpy
   implements SaveSurveyResultRepository
 {
-  params?: SaveSurveyResultParams;
+  params?: SaveSurveyResultRepository.Params;
 
-  async save(surveyData: SaveSurveyResultParams): Promise<void> {
+  async save(surveyData: SaveSurveyResultRepository.Params): Promise<void> {
     this.params = surveyData;
     return Promise.resolve();
   }
@@ -26,9 +24,9 @@ export class LoadSurveyResultRepositorySpy
   async loadBySurveyId(
     surveyId: string,
     accountId: string,
-  ): Promise<SurveyResultModel | null> {
+  ): Promise<LoadSurveyResultRepository.Result> {
     this.accountId = accountId;
     this.surveyId = surveyId;
-    return Promise.resolve(this.result);
+    return this.result;
   }
 }

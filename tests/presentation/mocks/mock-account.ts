@@ -16,7 +16,7 @@ export class AddAccountSpy implements AddAccount {
 
 export class AuthenticationSpy implements Authentication {
   Params?: Authentication.Params;
-  authenticationModel = {
+  result = {
     accessToken: faker.string.uuid(),
     name: faker.person.fullName(),
   };
@@ -25,7 +25,7 @@ export class AuthenticationSpy implements Authentication {
     authenticationParams: Authentication.Params,
   ): Promise<Authentication.Result> {
     this.Params = authenticationParams;
-    return this.authenticationModel;
+    return this.result;
   }
 }
 

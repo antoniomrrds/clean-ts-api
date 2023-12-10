@@ -2,8 +2,7 @@ import {
   LoadSurveyResultRepository,
   SaveSurveyResultRepository,
 } from '@/application/ports';
-import { SurveyResultModel } from '@/domain/entities';
-import { SaveSurveyResult, SaveSurveyResultParams } from '@/domain/usecases';
+import { SaveSurveyResult } from '@/domain/usecases';
 
 export class DbSaveSurveyResult implements SaveSurveyResult {
   constructor(
@@ -11,13 +10,13 @@ export class DbSaveSurveyResult implements SaveSurveyResult {
     private readonly loadSurveyResultRepository: LoadSurveyResultRepository,
   ) {}
 
-  async save(surveyData: SaveSurveyResultParams): Promise<SurveyResultModel> {
+  async save(
+    surveyData: SaveSurveyResult.Params,
+  ): Promise<SaveSurveyResult.Result> {
     await this.saveSurveyResultRepository.save(surveyData);
-    const surveyResult = await this.loadSurveyResultRepository.loadBySurveyId(
+    return this.loadSurveyResultRepository.loadBySurveyId(
       surveyData.surveyId,
       surveyData.accountId,
     );
-
-    return surveyResult as SurveyResultModel;
   }
 }
