@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { authDirectiveTransformer } from '@/main/graphql/directives/auth-directive';
 import { HttpStatus, getEnumKeyByValue } from '@/main/graphql/helpers';
 import resolvers from '@/main/graphql/resolvers';
 import typeDefs from '@/main/graphql/type-defs';
@@ -6,6 +7,8 @@ import { ApolloServer } from '@apollo/server';
 
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
 import { GraphQLError } from 'graphql';
+import { makeExecutableSchema } from '@graphql-tools/schema';
+
 import http from 'http';
 
 const handleErrors = (
@@ -32,10 +35,12 @@ const checkError = (error: GraphQLError, errorName: string): boolean => {
   );
 };
 
+let schema = makeExecutableSchema({ resolvers, typeDefs });
+schema = authDirectiveTransformer(schema);
+
 export const setupApolloServer = (httpServer: http.Server): ApolloServer =>
   new ApolloServer({
-    resolvers,
-    typeDefs,
+    schema,
     introspection: true,
     plugins: [
       ApolloServerPluginDrainHttpServer({ httpServer }),
