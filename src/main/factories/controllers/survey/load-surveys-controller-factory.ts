@@ -5,7 +5,7 @@ import {
   makeLogControllerDecorator,
 } from '@/main/factories';
 
-export const makeLoadSurveyController = (): Controller => {
+export const makeLoadSurveysController = (): Controller => {
   const controller = new LoadSurveysController(makeDbLoadSurveys());
   return makeLogControllerDecorator(controller);
 };
