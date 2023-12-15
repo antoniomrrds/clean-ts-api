@@ -1,13 +1,14 @@
 import request from 'supertest';
-import { app } from '@/main/config';
+import { setupApp } from '@/main/config';
 import { MongoHelper } from '@/infrastructure/db';
 import { Collection } from 'mongodb';
 import { jwtSecret } from '@/main/config/env';
 import { sign } from 'jsonwebtoken';
+import { Express } from 'express';
 
 let surveyCollection: Collection;
 let accountCollection: Collection;
-
+let app: Express;
 const makeAccessToken = async (): Promise<string> => {
   const result = await accountCollection.insertOne({
     name: 'any_name',
@@ -35,6 +36,8 @@ const makeAccessToken = async (): Promise<string> => {
 };
 describe('Survey Routes', () => {
   beforeAll(async () => {
+    app = (await setupApp()).app;
+
     await MongoHelper.connect(process.env.MONGO_URL as string);
   });
 

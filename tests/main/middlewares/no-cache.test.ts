@@ -1,8 +1,13 @@
-import { app } from '@/main/config';
+import { setupExpress } from '@/main/config';
 import { noCahe } from '@/main/middlewares';
+import { Express } from 'express';
 import request from 'supertest';
 
 describe('No Cache Middleware', () => {
+  let app: Express;
+  beforeAll(async () => {
+    app = await setupExpress();
+  });
   test('Should disable cache', async () => {
     app.get('/test_no_cache', noCahe, (req, res) => {
       res.send();

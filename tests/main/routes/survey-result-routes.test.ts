@@ -1,12 +1,15 @@
 import request from 'supertest';
-import { app } from '@/main/config';
+import { setupApp } from '@/main/config';
+import { Express } from 'express';
 import { MongoHelper } from '@/infrastructure/db';
 import { Collection } from 'mongodb';
 import { sign } from 'jsonwebtoken';
 import { jwtSecret } from '@/main/config/env';
 import MockDate from 'mockdate';
+
 let surveyCollection: Collection;
 let accountCollection: Collection;
+let app: Express;
 
 const mockAccessToken = async (): Promise<string> => {
   const result = await accountCollection.insertOne({
@@ -32,9 +35,10 @@ const mockAccessToken = async (): Promise<string> => {
   );
   return accessToken;
 };
-
 describe('SurveyResult Routes', () => {
-  beforeAll(() => {
+  beforeAll(async () => {
+    app = (await setupApp()).app;
+
     MockDate.set(new Date());
   });
 
