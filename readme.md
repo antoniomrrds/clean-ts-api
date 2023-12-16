@@ -1,6 +1,8 @@
 [![Build Status](https://app.travis-ci.com/antoniomrrds/clean-ts-api.svg?branch=master)](https://app.travis-ci.com/antoniomrrds/clean-ts-api)
 
 [![Coverage Status](https://coveralls.io/repos/github/antoniomrrds/clean-ts-api/badge.svg?branch=)](https://coveralls.io/github/antoniomrrds/clean-ts-api?branch=)
+[![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)
+[![Open Source](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://opensource.org/)
 
 # **Clean Node API**
 
