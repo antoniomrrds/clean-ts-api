@@ -58,7 +58,6 @@ describe('Login GraphQL', () => {
     it('Should return an Account on valid data', async () => {
       const res = await request(app).post('/graphql').send({ query });
       expect(res.status).toBe(200);
-      console.log(res);
       expect(res.body.data.signup.accessToken).toBeTruthy();
       expect(res.body.data.signup.name).toBe('any_name');
     });
