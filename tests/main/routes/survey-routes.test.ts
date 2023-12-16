@@ -17,14 +17,11 @@ const makeAccessToken = async (): Promise<string> => {
     role: 'admin',
   });
 
-  const fakeAccount = await accountCollection?.findOne({
-    _id: result?.insertedId,
-  });
-  const id = fakeAccount?._id;
+  const id = result.insertedId.toHexString();
   const accessToken = sign({ id }, jwtSecret);
   await accountCollection.updateOne(
     {
-      _id: id,
+      _id: result.insertedId,
     },
     {
       $set: {
